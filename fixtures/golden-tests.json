@@ -2,12 +2,12 @@
   "$schema": "./golden-tests.schema.json",
   "version": "1.1",
   "mcp_name": "Greek Law MCP",
-  "description": "Golden contract tests for metadata-only ingestion from official Greek sources (PDF-only full text limitation).",
+  "description": "Golden contract tests for official FEK ingestion (PDF extraction with OCR fallback where needed).",
   "tests": [
     {
-      "id": "gr-meta-001",
-      "category": "negative_test",
-      "description": "Article retrieval gracefully handles missing structured article text for Law 4624/2019.",
+      "id": "gr-real-001",
+      "category": "retrieval_test",
+      "description": "Article retrieval for Law 4624/2019 Art. 1 returns source-derived text.",
       "tool": "get_provision",
       "input": {
         "law_identifier": "Ν. 4624/2019",
@@ -18,9 +18,9 @@
       }
     },
     {
-      "id": "gr-meta-002",
-      "category": "negative_test",
-      "description": "Search returns gracefully when no provision corpus is available.",
+      "id": "gr-real-002",
+      "category": "search_test",
+      "description": "Search across ingested provisions executes successfully.",
       "tool": "search_legislation",
       "input": {
         "query": "προσωπικά δεδομένα"
@@ -30,9 +30,9 @@
       }
     },
     {
-      "id": "gr-meta-003",
+      "id": "gr-real-003",
       "category": "citation_roundtrip",
-      "description": "Provision citation request for PD 131/2003 returns a graceful empty response.",
+      "description": "Provision citation request for PD 131/2003 Art. 1 returns source-derived text.",
       "tool": "get_provision",
       "input": {
         "law_identifier": "Π.Δ. 131/2003",
@@ -43,7 +43,7 @@
       }
     },
     {
-      "id": "gr-meta-004",
+      "id": "gr-real-004",
       "category": "negative_test",
       "description": "Non-existent law identifier is handled gracefully.",
       "tool": "get_provision",

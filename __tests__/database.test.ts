@@ -16,7 +16,7 @@ afterAll(() => {
   db.close();
 });
 
-describe('Greek Law MCP Database (official metadata mode)', () => {
+describe('Greek Law MCP Database (official FEK ingestion mode)', () => {
   describe('Schema', () => {
     it('has legal_documents table', () => {
       const row = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='legal_documents'").get();
@@ -35,14 +35,14 @@ describe('Greek Law MCP Database (official metadata mode)', () => {
       expect(row.count).toBe(10);
     });
 
-    it('has zero provisions because official source is PDF-only', () => {
+    it('has extracted provisions from official FEK text', () => {
       const row = db.prepare('SELECT COUNT(*) as count FROM legal_provisions').get() as { count: number };
-      expect(row.count).toBe(0);
+      expect(row.count).toBeGreaterThan(900);
     });
 
-    it('has zero definitions because no structured article text is available', () => {
+    it('has extracted definitions from definitions provisions where detectable', () => {
       const row = db.prepare('SELECT COUNT(*) as count FROM definitions').get() as { count: number };
-      expect(row.count).toBe(0);
+      expect(row.count).toBeGreaterThan(100);
     });
 
     it('has zero EU cross-references in metadata-only ingestion', () => {
@@ -72,6 +72,22 @@ describe('Greek Law MCP Database (official metadata mode)', () => {
       expect(row!.title).toContain('ΟΔΗΓΙΑ 2000/31');
       expect(row!.issued_date).toBe('2003-05-16');
       expect(row!.url).toContain('/2003/20030100116.pdf');
+    });
+
+    it('contains Law 4624/2019 Art. 1 provision text', () => {
+      const row = db.prepare(
+        "SELECT content FROM legal_provisions WHERE document_id = 'law-4624-2019' AND provision_ref = 'Art. 1'"
+      ).get() as { content: string } | undefined;
+      expect(row).toBeDefined();
+      expect(row!.content).toContain('Σκοπός του παρόντος νόμου');
+    });
+
+    it('contains PD 131/2003 Art. 1 provision text', () => {
+      const row = db.prepare(
+        "SELECT content FROM legal_provisions WHERE document_id = 'pd-131-2003' AND provision_ref = 'Art. 1'"
+      ).get() as { content: string } | undefined;
+      expect(row).toBeDefined();
+      expect(row!.content).toContain('Ορισμοί');
     });
   });
 

@@ -6,7 +6,7 @@ sources:
   - name: "Εθνικό Τυπογραφείο (search.et.gr + et.gr FEK archive)"
     authority: "Εθνικό Τυπογραφείο (National Printing Office of Greece)"
     official_portal: "https://search.et.gr/el/search-legislation/"
-    retrieval_method: "API"
+    retrieval_method: "API + PDF_TEXT_EXTRACTION"
     update_frequency: "unknown"
     last_ingested: "2026-02-21"
     license_or_terms:
@@ -14,8 +14,8 @@ sources:
       url: "https://et.gr/oroi-chrisis/"
       summary: "Official FEK texts are published by the National Printing Office; use is subject to official site terms."
     coverage:
-      scope: "Official metadata for selected Greek laws via search API, with canonical FEK PDF URLs from official storage"
-      limitations: "No official structured article-level API endpoint was found; full legal text is available as PDF only"
+      scope: "Official metadata for selected Greek laws via search API, with article-level text extracted from official FEK PDFs"
+      limitations: "No official structured article-level API endpoint was found; two image-only legacy FEKs required OCR fallback"
     languages:
       - "el"
 

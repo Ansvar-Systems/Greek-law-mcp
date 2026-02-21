@@ -36,6 +36,40 @@ export interface ApiEnvelope<T> {
   parsedData: T;
 }
 
+export async function fetchOfficialPdf(url: string, maxRetries = 3): Promise<Buffer> {
+  await rateLimit();
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'User-Agent': USER_AGENT,
+        'Accept': 'application/pdf,application/octet-stream,*/*',
+      },
+      redirect: 'follow',
+    });
+
+    if (response.status === 429 || response.status >= 500) {
+      if (attempt < maxRetries) {
+        const backoff = Math.pow(2, attempt + 1) * 1000;
+        console.log(`  HTTP ${response.status} for ${url}, retrying in ${backoff}ms...`);
+        await wait(backoff);
+        continue;
+      }
+    }
+
+    if (!response.ok) {
+      const text = await response.text().catch(() => '');
+      throw new Error(`HTTP ${response.status} for ${url}: ${text.slice(0, 200)}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    return Buffer.from(arrayBuffer);
+  }
+
+  throw new Error(`Failed to fetch PDF ${url} after ${maxRetries} retries`);
+}
+
 async function request<T>(
   path: string,
   method: 'GET' | 'POST',

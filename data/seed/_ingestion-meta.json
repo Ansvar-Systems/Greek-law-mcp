@@ -1,6 +1,10 @@
 {
-  "source": "search.et.gr / searchetv99.azurewebsites.net",
-  "generated_at": "2026-02-21T20:47:38.511Z",
+  "source": "search.et.gr / searchetv99.azurewebsites.net + official FEK PDFs",
+  "generated_at": "2026-02-21T21:26:19.645Z",
+  "options": {
+    "ocr_enabled": true,
+    "ocr_max_pages": 35
+  },
   "fetched": [
     {
       "id": "law-1733-1987",
@@ -8,7 +12,14 @@
       "year": 1987,
       "official_label": "Α 171/1987",
       "official_search_id": "713102",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/1987/19870100171.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/1987/19870100171.pdf",
+      "extraction_method": "ocr_tesseract_js",
+      "page_count": 16,
+      "provision_count": 3,
+      "definition_count": 0,
+      "warnings": [
+        "OCR-derived text may include recognition noise from source scan quality."
+      ]
     },
     {
       "id": "law-2472-1997",
@@ -16,7 +27,14 @@
       "year": 1997,
       "official_label": "Α 50/1997",
       "official_search_id": "170601",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/1997/19970100050.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/1997/19970100050.pdf",
+      "extraction_method": "ocr_tesseract_js",
+      "page_count": 12,
+      "provision_count": 4,
+      "definition_count": 0,
+      "warnings": [
+        "OCR-derived text may include recognition noise from source scan quality."
+      ]
     },
     {
       "id": "law-3979-2011",
@@ -24,7 +42,12 @@
       "year": 2011,
       "official_label": "Α 138/2011",
       "official_search_id": "436828",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2011/20110100138.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2011/20110100138.pdf",
+      "extraction_method": "pdftotext",
+      "page_count": 28,
+      "provision_count": 63,
+      "definition_count": 0,
+      "warnings": []
     },
     {
       "id": "law-4070-2012",
@@ -32,7 +55,12 @@
       "year": 2012,
       "official_label": "Α 82/2012",
       "official_search_id": "473837",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2012/20120100082.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2012/20120100082.pdf",
+      "extraction_method": "pdftotext",
+      "page_count": 136,
+      "provision_count": 185,
+      "definition_count": 48,
+      "warnings": []
     },
     {
       "id": "law-4577-2018-nis",
@@ -40,7 +68,12 @@
       "year": 2018,
       "official_label": "Α 199/2018",
       "official_search_id": "575062",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2018/20180100199.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2018/20180100199.pdf",
+      "extraction_method": "pdftotext",
+      "page_count": 12,
+      "provision_count": 19,
+      "definition_count": 11,
+      "warnings": []
     },
     {
       "id": "law-4577-2018-cii",
@@ -48,7 +81,12 @@
       "year": 2018,
       "official_label": "Α 199/2018",
       "official_search_id": "575062",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2018/20180100199.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2018/20180100199.pdf",
+      "extraction_method": "pdftotext",
+      "page_count": 12,
+      "provision_count": 19,
+      "definition_count": 11,
+      "warnings": []
     },
     {
       "id": "law-4624-2019",
@@ -56,7 +94,12 @@
       "year": 2019,
       "official_label": "Α 137/2019",
       "official_search_id": "581161",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100137.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100137.pdf",
+      "extraction_method": "pdftotext",
+      "page_count": 28,
+      "provision_count": 87,
+      "definition_count": 19,
+      "warnings": []
     },
     {
       "id": "law-4727-2020",
@@ -64,7 +107,12 @@
       "year": 2020,
       "official_label": "Α 184/2020",
       "official_search_id": "605579",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2020/20200100184.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2020/20200100184.pdf",
+      "extraction_method": "pdftotext",
+      "page_count": 180,
+      "provision_count": 237,
+      "definition_count": 91,
+      "warnings": []
     },
     {
       "id": "pd-131-2003",
@@ -72,7 +120,12 @@
       "year": 2003,
       "official_label": "Α 116/2003",
       "official_search_id": "265024",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2003/20030100116.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2003/20030100116.pdf",
+      "extraction_method": "pdftotext_windows1253",
+      "page_count": 8,
+      "provision_count": 19,
+      "definition_count": 6,
+      "warnings": []
     },
     {
       "id": "penal-code-cybercrime",
@@ -80,13 +133,17 @@
       "year": 2019,
       "official_label": "Α 95/2019",
       "official_search_id": "599046",
-      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100095.pdf"
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100095.pdf",
+      "extraction_method": "pdftotext",
+      "page_count": 60,
+      "provision_count": 340,
+      "definition_count": 0,
+      "warnings": []
     }
   ],
   "skipped": [],
   "limitations": [
-    "Official API exposes metadata and FEK PDF links.",
-    "No structured endpoint for article-level legal text was found.",
-    "Seed files intentionally contain zero provisions/definitions to avoid synthetic text."
+    "Official source is PDF-native for full text; article extraction uses pdftotext with OCR fallback when enabled.",
+    "OCR quality depends on source scan quality; low-confidence OCR passages are preserved as extracted (never fabricated)."
   ]
 }

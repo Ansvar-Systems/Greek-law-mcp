@@ -5,28 +5,28 @@
   "jurisdiction": "GR",
   "provisions": [
     {
-      "id": "gr-hash-meta-001",
-      "description": "Law 4624/2019 Art. 1 hash unavailable: official source is PDF-only with no structured article API.",
+      "id": "gr-hash-real-001",
+      "description": "Law 4624/2019 Art. 1 exact text hash from official FEK PDF extraction.",
       "upstream_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100137.pdf",
       "selector_hint": "Άρθρο 1",
-      "expected_sha256": "NOT_AVAILABLE_PDF_ONLY",
-      "expected_snippet": "NOT_AVAILABLE_PDF_ONLY"
+      "expected_sha256": "d58bb54d4a43244ff8da8501e948a0db99cac2c61bd3c41986a552d4552c3e63",
+      "expected_snippet": "Σκοπός του νόμου Σκοπός του παρόντος νόμου είναι: α) η αντικατάσταση του νομοθετικού πλαισίου που ρυθμίζει τη συγκρότηση και λειτουργία της Αρχής Προστασίας Δεδ"
     },
     {
-      "id": "gr-hash-meta-002",
-      "description": "Law 4727/2020 Art. 1 hash unavailable: official source is PDF-only with no structured article API.",
+      "id": "gr-hash-real-002",
+      "description": "Law 4727/2020 Art. 1 exact text hash from official FEK PDF extraction.",
       "upstream_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2020/20200100184.pdf",
       "selector_hint": "Άρθρο 1",
-      "expected_sha256": "NOT_AVAILABLE_PDF_ONLY",
-      "expected_snippet": "NOT_AVAILABLE_PDF_ONLY"
+      "expected_sha256": "b9b381d5b88f225aafccfb6b3cd2732b8e0dbb61660df482b1307a45f6995c8b",
+      "expected_snippet": "Σκοπός και πεδίο εφαρμογής του Μέρους Α΄ 1. Σκοπός του Μέρους Α΄ του παρόντος είναι η ολοκληρωμένη ρύθμιση όλων των θεμάτων που άπτονται της ψηφιακής διακυβέρνη"
     },
     {
-      "id": "gr-hash-meta-003",
-      "description": "PD 131/2003 Art. 1 hash unavailable: official source is PDF-only with no structured article API.",
+      "id": "gr-hash-real-003",
+      "description": "PD 131/2003 Art. 1 exact text hash from official FEK PDF extraction (windows-1253 recoding).",
       "upstream_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2003/20030100116.pdf",
       "selector_hint": "Άρθρο 1",
-      "expected_sha256": "NOT_AVAILABLE_PDF_ONLY",
-      "expected_snippet": "NOT_AVAILABLE_PDF_ONLY"
+      "expected_sha256": "42e6f072ba4bddc82ae4f803646634e9fa8b8dab3bad0c307c03e813350b8f53",
+      "expected_snippet": "Ορισμοί Για τους σκοπούς του παρόντος Π.Δ. νοούνται ως: (α) (α) «Υπηρεσίες της Κοινωνίας της Πληροφορίας»: οποιαδήποτε υπηρεσία της κοινωνίας της πληροφορίας, ή"
     }
   ]
 }

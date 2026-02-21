@@ -1,5 +1,5 @@
 /**
- * Tool-level database checks for metadata-only official ingestion.
+ * Tool-level database checks for official FEK ingestion with extracted provisions.
  */
 
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
@@ -27,9 +27,9 @@ describe('database integrity', () => {
     expect(row.cnt).toBe(10);
   });
 
-  it('has zero provisions in metadata-only mode', () => {
+  it('has extracted provisions', () => {
     const row = db.prepare('SELECT COUNT(*) as cnt FROM legal_provisions').get() as { cnt: number };
-    expect(row.cnt).toBe(0);
+    expect(row.cnt).toBeGreaterThan(900);
   });
 
   it('keeps FTS tables present even when empty', () => {
@@ -60,11 +60,12 @@ describe('official records', () => {
   });
 });
 
-describe('provision retrieval negative case', () => {
-  it('returns no provision rows for known laws (no structured API source)', () => {
+describe('provision retrieval', () => {
+  it('returns Law 4624/2019 Art. 1 content', () => {
     const row = db.prepare(
       "SELECT content FROM legal_provisions WHERE document_id = 'law-4624-2019' AND provision_ref = 'Art. 1'"
-    ).get();
-    expect(row).toBeUndefined();
+    ).get() as { content: string } | undefined;
+    expect(row).toBeDefined();
+    expect(row!.content).toContain('Σκοπός του παρόντος νόμου');
   });
 });

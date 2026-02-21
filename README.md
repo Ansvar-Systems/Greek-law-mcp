@@ -6,6 +6,8 @@
 
 A Model Context Protocol (MCP) server providing access to Greek legislation covering data protection, cybersecurity, e-commerce, and criminal law provisions.
 
+Provision text is ingested from official FEK PDFs (metadata API + PDF text extraction, with OCR fallback for image-only legacy issues).
+
 **MCP Registry:** `eu.ansvar/greek-law-mcp`
 **npm:** `@ansvar/greek-law-mcp`
 

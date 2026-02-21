@@ -1,13 +1,9 @@
 /**
- * Parser and target catalogue for official Greek legislation metadata.
+ * Parser and target catalogue for official Greek legislation ingestion.
  *
  * Source:
  *   - search.et.gr / searchetv99.azurewebsites.net API
- *   - Official full text is available as FEK PDF only.
- *
- * Limitation:
- *   - No structured article-level API endpoint was found.
- *   - Therefore this parser emits document metadata and source URLs only.
+ *   - Official full text is available as FEK PDF.
  */
 
 import type { SearchLegislationRow } from './fetcher.js';
@@ -119,10 +115,249 @@ export function parseSearchResultToAct(row: SearchLegislationRow, target: ActTar
     issued_date: issuedDate,
     url: buildFekPdfUrl(row),
     description: title,
-    // Official source does not provide article-level text via API.
     provisions: [],
     definitions: [],
   };
+}
+
+interface ArticleHeading {
+  startOffset: number;
+  endOffset: number;
+  section: string;
+  inlineTitle?: string;
+}
+
+export interface ParseProvisionOptions {
+  lawNumber?: string;
+  legislationCatalogues?: '1' | '2';
+}
+
+const ARTICLE_HEADING_LINE_REGEX = /^\s*(?:Άρθρο|Αρθρο|ΑΡΘΡΟ|[΄´']Αρθρο|Άρδρο|Αρδρο|ΑΡΔΡΟ|Αρϑρο)\s+([0-9]{1,3}[A-Za-zΑ-Ωα-ω΄’'\-]*)(?:\s*[-–—.:]\s*(.+)|\s{2,}(.+))?\s*$/u;
+const CHAPTER_LINE_REGEX = /^\s*ΚΕΦΑΛΑΙΟ\s+([Α-ΩA-Za-z0-9΄'’\-]+)/u;
+
+function normalizeDocumentText(text: string): string {
+  return text
+    .replace(/\r/g, '')
+    .replace(/\f/g, '\n')
+    .replace(/\u0000/g, '')
+    .replace(/[ \t]+\n/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function normalizeSectionToken(value: string): string {
+  return value
+    .replace(/[.·]/g, '')
+    .replace(/[΄’']/g, '')
+    .trim();
+}
+
+function findArticleHeadings(text: string): ArticleHeading[] {
+  const headings: ArticleHeading[] = [];
+  const lines = text.split('\n');
+  let offset = 0;
+
+  for (const line of lines) {
+    const trimmed = line.trim();
+    const match = trimmed.match(ARTICLE_HEADING_LINE_REGEX);
+    if (match) {
+      const section = normalizeSectionToken(match[1]);
+      const inlineTitle = normalizeWhitespace((match[2] ?? match[3] ?? '').replace(/\.+\s*\d+$/, '').trim());
+      const title = inlineTitle.length > 0 && inlineTitle.length <= 160 ? inlineTitle : undefined;
+      const lineStart = offset + Math.max(0, line.indexOf(trimmed));
+
+      headings.push({
+        startOffset: lineStart,
+        endOffset: offset + line.length + 1,
+        section,
+        inlineTitle: title,
+      });
+    }
+
+    offset += line.length + 1;
+  }
+
+  return headings;
+}
+
+function normalizeProvisionBody(text: string): string {
+  const lines = text.split('\n');
+  const filtered = lines.filter(line => {
+    const trimmed = line.trim();
+    if (!trimmed) return true;
+    if (/^ΕΦΗΜΕΡΙ[ΣΣ].*ΚΥΒΕΡΝΗΣΕΩΣ/iu.test(trimmed)) return false;
+    if (/^Τεύχος\s+[A-Za-zΑ-ΩΆ-Ώ].*/iu.test(trimmed)) return false;
+    if (/^\d{3,4}$/.test(trimmed)) return false;
+    return true;
+  });
+
+  return filtered
+    .join('\n')
+    .replace(/^\s+|\s+$/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
+}
+
+function parseChapterNearOffset(text: string, headingOffset: number): string | undefined {
+  const windowStart = Math.max(0, headingOffset - 600);
+  const region = text.slice(windowStart, headingOffset);
+  const lines = region.split('\n');
+
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i].trim();
+    const match = line.match(CHAPTER_LINE_REGEX);
+    if (match) {
+      return `ΚΕΦΑΛΑΙΟ ${match[1]}`;
+    }
+  }
+
+  return undefined;
+}
+
+function looksLikeTitle(line: string): boolean {
+  if (!line) return false;
+  if (line.length > 140) return false;
+  if (/^\(?\d+[.)]/.test(line)) return false;
+  if (/^[α-ωΑ-Ω]\)/u.test(line)) return false;
+  if (/^[-–—]/.test(line)) return false;
+  return true;
+}
+
+function pickProvisionTitle(section: string, inlineTitle: string | undefined, body: string): string {
+  if (inlineTitle) {
+    return `Άρθρο ${section} - ${inlineTitle}`;
+  }
+
+  const firstLine = body.split('\n').map(line => line.trim()).find(Boolean);
+  if (firstLine && looksLikeTitle(firstLine)) {
+    return `Άρθρο ${section} - ${firstLine}`;
+  }
+
+  return `Άρθρο ${section}`;
+}
+
+function dedupeAndSortProvisions(provisions: ParsedProvision[]): ParsedProvision[] {
+  const byRef = new Map<string, ParsedProvision>();
+  for (const provision of provisions) {
+    const key = provision.provision_ref;
+    const existing = byRef.get(key);
+    if (!existing || normalizeWhitespace(provision.content).length > normalizeWhitespace(existing.content).length) {
+      byRef.set(key, provision);
+    }
+  }
+
+  return Array.from(byRef.values()).sort((a, b) => {
+    const aNum = Number.parseInt(a.section, 10);
+    const bNum = Number.parseInt(b.section, 10);
+    if (!Number.isNaN(aNum) && !Number.isNaN(bNum) && aNum !== bNum) return aNum - bNum;
+    return a.section.localeCompare(b.section, 'el');
+  });
+}
+
+function buildStartRegex(options: ParseProvisionOptions): RegExp | null {
+  if (!options.lawNumber || !options.legislationCatalogues) return null;
+
+  const escapedNumber = options.lawNumber.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  if (options.legislationCatalogues === '1') {
+    return new RegExp(
+      String.raw`(?:^|\n)\s*(?:ΝΟΜΟΣ|Νόμος)\s+ΥΠ[’'΄]?\s*ΑΡΙΘ\.?\s*${escapedNumber}\b`,
+      'iu',
+    );
+  }
+
+  return new RegExp(
+    String.raw`(?:^|\n)\s*ΠΡΟΕΔΡΙΚΟ\s+ΔΙΑΤΑΓΜΑ\s+ΥΠ[’'΄]?\s*ΑΡΙΘ\.?\s*${escapedNumber}\b`,
+    'iu',
+  );
+}
+
+function isolateTargetDocument(text: string, options: ParseProvisionOptions): string {
+  const startRegex = buildStartRegex(options);
+  if (!startRegex) return text;
+
+  const startMatch = startRegex.exec(text);
+  if (!startMatch || startMatch.index === undefined) {
+    return text;
+  }
+
+  const startIndex = startMatch.index;
+  const searchFrom = startIndex + startMatch[0].length;
+  const afterStart = text.slice(searchFrom);
+  const nextDocRegex =
+    /(?:^|\n)\s*(?:ΝΟΜΟΣ|ΠΡΟΕΔΡΙΚΟ\s+ΔΙΑΤΑΓΜΑ|ΝΟΜΟΘΕΤΙΚΟ\s+ΔΙΑΤΑΓΜΑ)\s+ΥΠ[’'΄]?\s*ΑΡΙΘ\.?\s*\d+/gu;
+  const nextMatch = nextDocRegex.exec(afterStart);
+  const endIndex = nextMatch && nextMatch.index !== undefined
+    ? searchFrom + nextMatch.index
+    : text.length;
+
+  return text.slice(startIndex, endIndex).trim();
+}
+
+export function parseProvisionsFromOfficialText(
+  text: string,
+  options: ParseProvisionOptions = {},
+): ParsedProvision[] {
+  const normalized = normalizeDocumentText(text);
+  const documentScope = isolateTargetDocument(normalized, options);
+  const headings = findArticleHeadings(documentScope);
+
+  if (headings.length === 0) {
+    return [];
+  }
+
+  const parsed: ParsedProvision[] = [];
+  for (let i = 0; i < headings.length; i++) {
+    const current = headings[i];
+    const next = headings[i + 1];
+    const bodyStart = current.endOffset;
+    const bodyEnd = next ? next.startOffset : documentScope.length;
+    const rawBody = documentScope.slice(bodyStart, bodyEnd);
+    const body = normalizeProvisionBody(rawBody);
+    if (body.length < 40) continue;
+
+    const section = current.section;
+    parsed.push({
+      provision_ref: `Art. ${section}`,
+      chapter: parseChapterNearOffset(documentScope, current.startOffset),
+      section,
+      title: pickProvisionTitle(section, current.inlineTitle, body),
+      content: body,
+    });
+  }
+
+  return dedupeAndSortProvisions(parsed);
+}
+
+function isDefinitionsProvision(provision: ParsedProvision): boolean {
+  const title = provision.title ?? '';
+  return /Ορισμοί|Ορισμός/iu.test(title) || /Ορισμοί|Ορισμός/iu.test(provision.content.slice(0, 200));
+}
+
+export function extractDefinitionsFromProvisions(provisions: ParsedProvision[]): ParsedDefinition[] {
+  const byTerm = new Map<string, ParsedDefinition>();
+
+  for (const provision of provisions) {
+    if (!isDefinitionsProvision(provision)) continue;
+    const lines = provision.content.split('\n').map(line => line.trim()).filter(Boolean);
+
+    for (const line of lines) {
+      const quoteMatch = line.match(/[«"]([^»"]{2,120})[»"]\s*[:\-]\s*(.+)$/u);
+      if (!quoteMatch) continue;
+
+      const term = normalizeWhitespace(quoteMatch[1]);
+      const definition = normalizeWhitespace(quoteMatch[2]);
+      if (!term || !definition) continue;
+      if (definition.length < 4) continue;
+
+      byTerm.set(term.toLocaleLowerCase('el'), {
+        term,
+        definition,
+        source_provision: provision.provision_ref,
+      });
+    }
+  }
+
+  return Array.from(byTerm.values()).slice(0, 100);
 }
 
 /**
