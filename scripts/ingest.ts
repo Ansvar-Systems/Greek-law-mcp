@@ -1,183 +1,174 @@
 #!/usr/bin/env tsx
 /**
- * Polish Law MCP -- Ingestion Pipeline
+ * Greek Law MCP -- Official Metadata Ingestion
  *
- * Fetches Polish legislation from the Sejm ELI API (api.sejm.gov.pl).
- * The Sejm (Polish Parliament) provides free public access to all legislation
- * published in Dziennik Ustaw (Journal of Laws) via the ELI API.
+ * Ingests real official records from the Greek National Printing House search API.
+ * This pipeline writes document metadata and official FEK PDF links.
  *
- * Strategy:
- * 1. For each act, fetch the HTML text from the ELI API endpoint
- * 2. Parse articles (Art.) from the structured HTML
- * 3. Write seed JSON files for the database builder
- *
- * Usage:
- *   npm run ingest                    # Full ingestion
- *   npm run ingest -- --limit 5       # Test with 5 acts
- *   npm run ingest -- --skip-fetch    # Reuse cached pages
- *
- * Data source: api.sejm.gov.pl (Chancellery of the Sejm of the Republic of Poland)
- * License: Polish legislation is public domain under Art. 4 of the Copyright Act
+ * Important limitation:
+ *   Full legal text is available as PDF only, with no structured article API.
+ *   Therefore seed files contain no provisions/definitions.
  */
 
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { fetchWithRateLimit } from './lib/fetcher.js';
-import { parsePolishHtml, KEY_POLISH_ACTS, type ActIndexEntry, type ParsedAct } from './lib/parser.js';
+import { searchLegislation } from './lib/fetcher.js';
+import {
+  TARGET_GREEK_ACTS,
+  pickBestSearchResult,
+  parseSearchResultToAct,
+  type ActTarget,
+  type ParsedAct,
+} from './lib/parser.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const SOURCE_DIR = path.resolve(__dirname, '../data/source');
 const SEED_DIR = path.resolve(__dirname, '../data/seed');
+const META_FILE = path.join(SEED_DIR, '_ingestion-meta.json');
 
-/** ELI API base URL for the Sejm */
-const ELI_API_BASE = 'https://api.sejm.gov.pl/eli/acts/DU';
+interface IngestionMeta {
+  source: string;
+  generated_at: string;
+  fetched: {
+    id: string;
+    law_number: string;
+    year: number;
+    official_label: string;
+    official_search_id: string;
+    pdf_url: string;
+  }[];
+  skipped: {
+    id: string;
+    law_number: string;
+    year: number;
+    reason: string;
+  }[];
+  limitations: string[];
+}
 
-function parseArgs(): { limit: number | null; skipFetch: boolean } {
+function parseArgs(): { limit: number | null } {
   const args = process.argv.slice(2);
   let limit: number | null = null;
-  let skipFetch = false;
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--limit' && args[i + 1]) {
-      limit = parseInt(args[i + 1], 10);
+      limit = Number.parseInt(args[i + 1], 10);
       i++;
-    } else if (args[i] === '--skip-fetch') {
-      skipFetch = true;
     }
   }
 
-  return { limit, skipFetch };
+  return { limit };
 }
 
-/**
- * Build the ELI API URL for fetching an act's HTML text.
- * Pattern: https://api.sejm.gov.pl/eli/acts/DU/{YEAR}/{POZ}/text.html
- */
-function buildTextUrl(act: ActIndexEntry): string {
-  return `${ELI_API_BASE}/${act.year}/${act.poz}/text.html`;
-}
+async function ingestAct(target: ActTarget): Promise<{
+  ok: true;
+  act: ParsedAct;
+  officialLabel: string;
+  officialSearchId: string;
+} | {
+  ok: false;
+  reason: string;
+}> {
+  const rows = await searchLegislation({
+    legislationCatalogues: target.legislationCatalogues,
+    legislationNumber: target.lawNumber,
+    selectYear: [String(target.year)],
+  });
 
-async function fetchAndParseActs(acts: ActIndexEntry[], skipFetch: boolean): Promise<void> {
-  console.log(`\nProcessing ${acts.length} Polish Acts from api.sejm.gov.pl...\n`);
-
-  fs.mkdirSync(SOURCE_DIR, { recursive: true });
-  fs.mkdirSync(SEED_DIR, { recursive: true });
-
-  let processed = 0;
-  let skipped = 0;
-  let failed = 0;
-  let totalProvisions = 0;
-  let totalDefinitions = 0;
-  const results: { act: string; provisions: number; definitions: number; status: string }[] = [];
-
-  for (const act of acts) {
-    const sourceFile = path.join(SOURCE_DIR, `${act.id}.html`);
-    const seedFile = path.join(SEED_DIR, `${act.id}.json`);
-
-    // Skip if seed already exists and we're in skip-fetch mode
-    if (skipFetch && fs.existsSync(seedFile)) {
-      const existing = JSON.parse(fs.readFileSync(seedFile, 'utf-8')) as ParsedAct;
-      const provCount = existing.provisions?.length ?? 0;
-      const defCount = existing.definitions?.length ?? 0;
-      totalProvisions += provCount;
-      totalDefinitions += defCount;
-      results.push({ act: act.shortName, provisions: provCount, definitions: defCount, status: 'cached' });
-      skipped++;
-      processed++;
-      continue;
-    }
-
-    try {
-      let html: string;
-
-      if (fs.existsSync(sourceFile) && skipFetch) {
-        html = fs.readFileSync(sourceFile, 'utf-8');
-        console.log(`  Using cached ${act.shortName} (${act.dziennikRef}) (${(html.length / 1024).toFixed(0)} KB)`);
-      } else {
-        const textUrl = buildTextUrl(act);
-        process.stdout.write(`  Fetching ${act.shortName} (${act.dziennikRef})...`);
-        const result = await fetchWithRateLimit(textUrl);
-
-        if (result.status !== 200) {
-          console.log(` HTTP ${result.status}`);
-          results.push({ act: act.shortName, provisions: 0, definitions: 0, status: `HTTP ${result.status}` });
-          failed++;
-          processed++;
-          continue;
-        }
-
-        html = result.body;
-
-        // Validate that we got real legislation content, not a bot challenge
-        if (html.includes('window["bobcmn"]') || !html.includes('unit_arti')) {
-          console.log(` BLOCKED (bot challenge or no article content)`);
-          results.push({ act: act.shortName, provisions: 0, definitions: 0, status: 'BLOCKED' });
-          failed++;
-          processed++;
-          continue;
-        }
-
-        fs.writeFileSync(sourceFile, html);
-        console.log(` OK (${(html.length / 1024).toFixed(0)} KB)`);
-      }
-
-      const parsed = parsePolishHtml(html, act);
-      fs.writeFileSync(seedFile, JSON.stringify(parsed, null, 2));
-      totalProvisions += parsed.provisions.length;
-      totalDefinitions += parsed.definitions.length;
-      console.log(`    -> ${parsed.provisions.length} provisions, ${parsed.definitions.length} definitions extracted`);
-      results.push({
-        act: act.shortName,
-        provisions: parsed.provisions.length,
-        definitions: parsed.definitions.length,
-        status: 'OK',
-      });
-    } catch (error) {
-      const msg = error instanceof Error ? error.message : String(error);
-      console.log(`  ERROR ${act.shortName}: ${msg}`);
-      results.push({ act: act.shortName, provisions: 0, definitions: 0, status: `ERROR: ${msg.substring(0, 80)}` });
-      failed++;
-    }
-
-    processed++;
+  const best = pickBestSearchResult(rows, target);
+  if (!best) {
+    return { ok: false, reason: 'No official result for law number/year in search API' };
   }
 
-  console.log(`\n${'='.repeat(72)}`);
-  console.log('Ingestion Report');
-  console.log('='.repeat(72));
-  console.log(`\n  Source:       api.sejm.gov.pl (Sejm ELI API)`);
-  console.log(`  License:     Public domain (Art. 4 Polish Copyright Act)`);
-  console.log(`  Processed:   ${processed}`);
-  console.log(`  Cached:      ${skipped}`);
-  console.log(`  Failed:      ${failed}`);
-  console.log(`  Total provisions:  ${totalProvisions}`);
-  console.log(`  Total definitions: ${totalDefinitions}`);
-  console.log(`\n  Per-Act breakdown:`);
-  console.log(`  ${'Act'.padEnd(20)} ${'Provisions'.padStart(12)} ${'Definitions'.padStart(13)} ${'Status'.padStart(10)}`);
-  console.log(`  ${'-'.repeat(20)} ${'-'.repeat(12)} ${'-'.repeat(13)} ${'-'.repeat(10)}`);
-  for (const r of results) {
-    console.log(`  ${r.act.padEnd(20)} ${String(r.provisions).padStart(12)} ${String(r.definitions).padStart(13)} ${r.status.padStart(10)}`);
-  }
-  console.log('');
+  const act = parseSearchResultToAct(best, target);
+  return {
+    ok: true,
+    act,
+    officialLabel: best.search_PrimaryLabel,
+    officialSearchId: best.search_ID,
+  };
 }
 
 async function main(): Promise<void> {
-  const { limit, skipFetch } = parseArgs();
+  const { limit } = parseArgs();
 
-  console.log('Polish Law MCP -- Ingestion Pipeline');
-  console.log('====================================\n');
-  console.log(`  Source: api.sejm.gov.pl (Chancellery of the Sejm)`);
-  console.log(`  Format: ELI HTML (structured legislation text)`);
-  console.log(`  License: Public domain (Art. 4 Polish Copyright Act)`);
+  console.log('Greek Law MCP -- Official Metadata Ingestion');
+  console.log('===========================================\n');
+  console.log('  Source:  search.et.gr / searchetv99.azurewebsites.net');
+  console.log('  Method:  Official API metadata + FEK PDF URL derivation');
+  console.log('  Note:    No structured article-level API found (PDF-only full text)\n');
 
-  if (limit) console.log(`  --limit ${limit}`);
-  if (skipFetch) console.log(`  --skip-fetch`);
+  fs.mkdirSync(SEED_DIR, { recursive: true });
 
-  const acts = limit ? KEY_POLISH_ACTS.slice(0, limit) : KEY_POLISH_ACTS;
-  await fetchAndParseActs(acts, skipFetch);
+  const targets = limit ? TARGET_GREEK_ACTS.slice(0, limit) : TARGET_GREEK_ACTS;
+  const fetched: IngestionMeta['fetched'] = [];
+  const skipped: IngestionMeta['skipped'] = [];
+
+  for (const target of targets) {
+    process.stdout.write(`  Resolving ${target.id} (${target.lawNumber}/${target.year})...`);
+    try {
+      const result = await ingestAct(target);
+      if (!result.ok) {
+        console.log(` SKIPPED (${result.reason})`);
+        skipped.push({
+          id: target.id,
+          law_number: target.lawNumber,
+          year: target.year,
+          reason: result.reason,
+        });
+        continue;
+      }
+
+      const outFile = path.join(SEED_DIR, `${target.id}.json`);
+      fs.writeFileSync(outFile, JSON.stringify(result.act, null, 2));
+
+      fetched.push({
+        id: target.id,
+        law_number: target.lawNumber,
+        year: target.year,
+        official_label: result.officialLabel,
+        official_search_id: result.officialSearchId,
+        pdf_url: result.act.url,
+      });
+
+      console.log(` OK (${result.officialLabel})`);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.log(` ERROR (${message})`);
+      skipped.push({
+        id: target.id,
+        law_number: target.lawNumber,
+        year: target.year,
+        reason: message,
+      });
+    }
+  }
+
+  const meta: IngestionMeta = {
+    source: 'search.et.gr / searchetv99.azurewebsites.net',
+    generated_at: new Date().toISOString(),
+    fetched,
+    skipped,
+    limitations: [
+      'Official API exposes metadata and FEK PDF links.',
+      'No structured endpoint for article-level legal text was found.',
+      'Seed files intentionally contain zero provisions/definitions to avoid synthetic text.',
+    ],
+  };
+
+  fs.writeFileSync(META_FILE, JSON.stringify(meta, null, 2));
+
+  console.log('\n' + '='.repeat(72));
+  console.log('Ingestion Report');
+  console.log('='.repeat(72));
+  console.log(`  Targets: ${targets.length}`);
+  console.log(`  Fetched: ${fetched.length}`);
+  console.log(`  Skipped: ${skipped.length}`);
+  console.log(`  Seed dir: ${SEED_DIR}`);
+  console.log(`  Meta file: ${META_FILE}`);
+  console.log('');
 }
 
 main().catch(error => {

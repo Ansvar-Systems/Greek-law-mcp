@@ -1,56 +1,32 @@
 {
   "$schema": "./golden-hashes.schema.json",
-  "version": "1.0",
+  "version": "1.1",
   "mcp_name": "Greek Law MCP",
   "jurisdiction": "GR",
   "provisions": [
     {
-      "id": "gr-hash-001",
-      "description": "GDPR Implementation Law (4624/2019) Art. 1 -- subject matter of GDPR implementing provisions",
-      "upstream_url": "https://www.et.gr/api/FullText?id=20190100137",
-      "selector_hint": "Art. 1 - Subject matter",
-      "expected_sha256": "COMPUTE_ON_FIRST_INGEST",
-      "expected_snippet": "personal data"
+      "id": "gr-hash-meta-001",
+      "description": "Law 4624/2019 Art. 1 hash unavailable: official source is PDF-only with no structured article API.",
+      "upstream_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100137.pdf",
+      "selector_hint": "Άρθρο 1",
+      "expected_sha256": "NOT_AVAILABLE_PDF_ONLY",
+      "expected_snippet": "NOT_AVAILABLE_PDF_ONLY"
     },
     {
-      "id": "gr-hash-002",
-      "description": "NIS Implementation Law (4577/2018) Art. 1 -- scope of NIS transposition",
-      "upstream_url": "https://www.et.gr",
-      "selector_hint": "Art. 1 - Subject matter",
-      "expected_sha256": "COMPUTE_ON_FIRST_INGEST",
-      "expected_snippet": "network and information systems"
+      "id": "gr-hash-meta-002",
+      "description": "Law 4727/2020 Art. 1 hash unavailable: official source is PDF-only with no structured article API.",
+      "upstream_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2020/20200100184.pdf",
+      "selector_hint": "Άρθρο 1",
+      "expected_sha256": "NOT_AVAILABLE_PDF_ONLY",
+      "expected_snippet": "NOT_AVAILABLE_PDF_ONLY"
     },
     {
-      "id": "gr-hash-003",
-      "description": "Electronic Communications Law (4070/2012) Art. 3 -- EETT as national regulatory authority",
-      "upstream_url": "https://www.et.gr",
-      "selector_hint": "Art. 3 - EETT",
-      "expected_sha256": "COMPUTE_ON_FIRST_INGEST",
-      "expected_snippet": "EETT"
-    },
-    {
-      "id": "gr-hash-004",
-      "description": "E-Commerce Decree (PD 131/2003) Art. 1 -- scope of e-commerce transposition",
-      "upstream_url": "https://www.et.gr",
-      "selector_hint": "Art. 1 - Subject matter and scope",
-      "expected_sha256": "COMPUTE_ON_FIRST_INGEST",
-      "expected_snippet": "electronic commerce"
-    },
-    {
-      "id": "gr-hash-005",
-      "description": "Penal Code Art. 370B(1) -- unauthorised access to computer data",
-      "upstream_url": "https://www.et.gr",
-      "selector_hint": "Art. 370B(1) - Unauthorised access",
-      "expected_sha256": "COMPUTE_ON_FIRST_INGEST",
-      "expected_snippet": "computer system"
-    },
-    {
-      "id": "gr-hash-006",
-      "description": "Digital Governance Law (4727/2020) Art. 4 -- Unified Digital Portal gov.gr",
-      "upstream_url": "https://www.et.gr",
-      "selector_hint": "Art. 4 - gov.gr",
-      "expected_sha256": "COMPUTE_ON_FIRST_INGEST",
-      "expected_snippet": "gov.gr"
+      "id": "gr-hash-meta-003",
+      "description": "PD 131/2003 Art. 1 hash unavailable: official source is PDF-only with no structured article API.",
+      "upstream_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2003/20030100116.pdf",
+      "selector_hint": "Άρθρο 1",
+      "expected_sha256": "NOT_AVAILABLE_PDF_ONLY",
+      "expected_snippet": "NOT_AVAILABLE_PDF_ONLY"
     }
   ]
 }

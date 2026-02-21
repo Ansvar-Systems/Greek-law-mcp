@@ -34,7 +34,7 @@ greek-law-mcp.vercel.app/mcp
 
 | Source | Authority | License |
 |--------|-----------|---------|
-| [ET (Εφημερίδα της Κυβερνήσεως) / legislation.gr](https://www.et.gr) | Εθνικό Τυπογραφείο (National Printing Office of Greece) | Greek Government Open Data (public domain under Greek Copyright Act Art. 2) |
+| [Εθνικό Τυπογραφείο search portal](https://search.et.gr/el/search-legislation/) + [official FEK archive](https://et.gr) | Εθνικό Τυπογραφείο (National Printing Office of Greece) | Government terms (see `sources.yml`) |
 
 > Full provenance: [`sources.yml`](./sources.yml)
 

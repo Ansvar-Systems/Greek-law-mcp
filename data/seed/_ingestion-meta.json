@@ -1,0 +1,92 @@
+{
+  "source": "search.et.gr / searchetv99.azurewebsites.net",
+  "generated_at": "2026-02-21T20:47:38.511Z",
+  "fetched": [
+    {
+      "id": "law-1733-1987",
+      "law_number": "1733",
+      "year": 1987,
+      "official_label": "Α 171/1987",
+      "official_search_id": "713102",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/1987/19870100171.pdf"
+    },
+    {
+      "id": "law-2472-1997",
+      "law_number": "2472",
+      "year": 1997,
+      "official_label": "Α 50/1997",
+      "official_search_id": "170601",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/1997/19970100050.pdf"
+    },
+    {
+      "id": "law-3979-2011",
+      "law_number": "3979",
+      "year": 2011,
+      "official_label": "Α 138/2011",
+      "official_search_id": "436828",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2011/20110100138.pdf"
+    },
+    {
+      "id": "law-4070-2012",
+      "law_number": "4070",
+      "year": 2012,
+      "official_label": "Α 82/2012",
+      "official_search_id": "473837",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2012/20120100082.pdf"
+    },
+    {
+      "id": "law-4577-2018-nis",
+      "law_number": "4577",
+      "year": 2018,
+      "official_label": "Α 199/2018",
+      "official_search_id": "575062",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2018/20180100199.pdf"
+    },
+    {
+      "id": "law-4577-2018-cii",
+      "law_number": "4577",
+      "year": 2018,
+      "official_label": "Α 199/2018",
+      "official_search_id": "575062",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2018/20180100199.pdf"
+    },
+    {
+      "id": "law-4624-2019",
+      "law_number": "4624",
+      "year": 2019,
+      "official_label": "Α 137/2019",
+      "official_search_id": "581161",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100137.pdf"
+    },
+    {
+      "id": "law-4727-2020",
+      "law_number": "4727",
+      "year": 2020,
+      "official_label": "Α 184/2020",
+      "official_search_id": "605579",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2020/20200100184.pdf"
+    },
+    {
+      "id": "pd-131-2003",
+      "law_number": "131",
+      "year": 2003,
+      "official_label": "Α 116/2003",
+      "official_search_id": "265024",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2003/20030100116.pdf"
+    },
+    {
+      "id": "penal-code-cybercrime",
+      "law_number": "4619",
+      "year": 2019,
+      "official_label": "Α 95/2019",
+      "official_search_id": "599046",
+      "pdf_url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2019/20190100095.pdf"
+    }
+  ],
+  "skipped": [],
+  "limitations": [
+    "Official API exposes metadata and FEK PDF links.",
+    "No structured endpoint for article-level legal text was found.",
+    "Seed files intentionally contain zero provisions/definitions to avoid synthetic text."
+  ]
+}
