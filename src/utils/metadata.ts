@@ -30,12 +30,12 @@ export function generateResponseMetadata(
   }
 
   return {
-    data_source: 'Federal Register of Legislation (legislation.gov.au) — Australian Government, Office of Parliamentary Counsel',
-    jurisdiction: 'AU',
+    data_source: 'ET / legislation.gr (www.et.gr) — Εθνικό Τυπογραφείο (National Printing Office of Greece)',
+    jurisdiction: 'GR',
     disclaimer:
-      'This data is sourced from the Federal Register of Legislation under CC BY 4.0 licence. ' +
-      'The authoritative versions are maintained by the Australian Government. ' +
-      'Always verify with the official Federal Register of Legislation portal (legislation.gov.au).',
+      'This data is sourced from ET / legislation.gr under public domain. ' +
+      'The authoritative versions are maintained by Εθνικό Τυπογραφείο (National Printing Office of Greece). ' +
+      'Always verify with the official portal (www.et.gr).',
     freshness,
   };
 }
