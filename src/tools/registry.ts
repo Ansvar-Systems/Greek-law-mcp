@@ -202,7 +202,7 @@ export const TOOLS: Tool[] = [
     name: 'get_eu_basis',
     description:
       'Get the EU legal basis that an Greek statute references or aligns with. ' +
-      'Greece is not an EU member but Greek laws may reference EU directives/regulations ' +
+      'As an EU Member State, Greece transposes EU directives and implements EU regulations ' +
       '(e.g., Privacy Act references GDPR concepts, SOCI Act aligns with NIS2 patterns). ' +
       'Returns EU document identifiers, reference types, and alignment status.',
     inputSchema: {
