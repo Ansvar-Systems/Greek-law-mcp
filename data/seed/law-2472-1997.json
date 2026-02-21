@@ -1,0 +1,199 @@
+{
+  "id": "law-2472-1997",
+  "type": "statute",
+  "title": "Νόμος 2472/1997 - Προστασία του ατόμου από την επεξεργασία δεδομένων προσωπικού χαρακτήρα",
+  "title_en": "Law 2472/1997 on the Protection of Individuals with regard to the Processing of Personal Data",
+  "short_name": "Personal Data Protection Law 1997",
+  "status": "amended",
+  "issued_date": "1997-04-10",
+  "in_force_date": "1997-04-10",
+  "url": "https://www.et.gr",
+  "description": "Original Greek data protection law transposing Directive 95/46/EC. Partially superseded by GDPR (Regulation (EU) 2016/679) and Law 4624/2019, but certain provisions remain in force, particularly those relating to the Hellenic Data Protection Authority and criminal penalties.",
+  "provisions": [
+    {
+      "provision_ref": "Art. 1",
+      "chapter": "Chapter A - General Provisions",
+      "section": "Object",
+      "title": "Object of the Law",
+      "content": "The object of this Law is to establish the conditions for the processing of personal data for the protection of the rights and fundamental freedoms of natural persons, and in particular the right to privacy, in transposition of Directive 95/46/EC of the European Parliament and of the Council of 24 October 1995 on the protection of individuals with regard to the processing of personal data and on the free movement of such data."
+    },
+    {
+      "provision_ref": "Art. 2",
+      "chapter": "Chapter A - General Provisions",
+      "section": "Definitions",
+      "title": "Definitions",
+      "content": "For the purposes of this Law: (a) 'personal data' means any information relating to an identified or identifiable natural person (data subject); an identifiable person is one who can be identified, directly or indirectly, in particular by reference to an identification number or to one or more factors specific to his physical, physiological, mental, economic, cultural, or social identity; (b) 'sensitive data' means data relating to racial or ethnic origin, political opinions, religious or philosophical beliefs, trade-union membership, health, social welfare, and sexual life, as well as data relating to criminal prosecutions or convictions; (c) 'processing of personal data' means any operation performed upon personal data, whether by automatic means or not."
+    },
+    {
+      "provision_ref": "Art. 3",
+      "chapter": "Chapter A - General Provisions",
+      "section": "Scope",
+      "title": "Scope of application",
+      "content": "This Law applies to the processing of personal data by any person established or residing in the Hellenic Republic or in a place where Greek law applies by virtue of public international law. This Law does not apply to the processing of personal data carried out by a natural person in the course of a purely personal or household activity."
+    },
+    {
+      "provision_ref": "Art. 4",
+      "chapter": "Chapter B - Conditions of processing",
+      "section": "Data quality",
+      "title": "Principles of data quality",
+      "content": "Personal data shall be: (a) processed fairly and lawfully; (b) collected for specified, explicit, and legitimate purposes and not further processed in a manner incompatible with those purposes; (c) adequate, relevant, and not excessive in relation to the purposes for which they are collected and processed; (d) accurate and, where necessary, kept up to date; (e) kept in a form which permits identification of data subjects for no longer than is necessary for the purposes for which the data were collected or processed."
+    },
+    {
+      "provision_ref": "Art. 5",
+      "chapter": "Chapter B - Conditions of processing",
+      "section": "Lawfulness",
+      "title": "Conditions for lawful processing",
+      "content": "Processing of personal data shall be permitted only when: (a) the data subject has given his unambiguous consent; (b) processing is necessary for the performance of a contract to which the data subject is party; (c) processing is necessary for compliance with a legal obligation to which the controller is subject; (d) processing is necessary to protect the vital interests of the data subject; (e) processing is necessary for the performance of a task carried out in the public interest or in the exercise of official authority; (f) processing is necessary for the purposes of the legitimate interests pursued by the controller, except where such interests are overridden by the interests or fundamental rights of the data subject."
+    },
+    {
+      "provision_ref": "Art. 6",
+      "chapter": "Chapter B - Conditions of processing",
+      "section": "Notification",
+      "title": "Notification to the Authority",
+      "content": "The controller shall notify the Hellenic Data Protection Authority before carrying out any wholly or partly automatic processing operation. The notification shall include: (a) the name and address of the controller; (b) the purpose of the processing; (c) a description of the category of data subjects and the data relating to them; (d) the recipients to whom the data may be disclosed; (e) proposed transfers to third countries; (f) a general description of the security measures taken."
+    },
+    {
+      "provision_ref": "Art. 7",
+      "chapter": "Chapter B - Conditions of processing",
+      "section": "Sensitive data",
+      "title": "Processing of sensitive data",
+      "content": "The processing of sensitive data is prohibited. By way of exception, processing of sensitive data shall be permitted where: (a) the data subject has given written consent; (b) processing is necessary for the purposes of carrying out obligations in the field of employment law; (c) processing is necessary to protect the vital interests of the data subject or another person where the data subject is physically or legally incapable of giving consent; (d) processing relates to data which are manifestly made public by the data subject; (e) processing is necessary for the establishment, exercise, or defence of legal claims."
+    },
+    {
+      "provision_ref": "Art. 8",
+      "chapter": "Chapter B - Conditions of processing",
+      "section": "Interconnection",
+      "title": "Interconnection of files",
+      "content": "The interconnection of files of personal data shall be permitted only with the prior authorisation of the Authority. The Authority shall grant authorisation only where the interconnection serves a purpose of public interest, does not infringe the fundamental rights of data subjects, and is subject to appropriate safeguards. The interconnection of files containing sensitive data shall be permitted only by specific provision of law."
+    },
+    {
+      "provision_ref": "Art. 9",
+      "chapter": "Chapter B - Conditions of processing",
+      "section": "Cross-border transfers",
+      "title": "Cross-border transfer of personal data",
+      "content": "The transfer of personal data to a country which is not a member of the European Union or the European Economic Area shall be permitted only if the country in question ensures an adequate level of protection. The adequacy of the level of protection shall be assessed by the Authority, having regard to the nature of the data, the purpose and duration of the processing, the country of origin and destination, the rules of law in the third country, and the professional rules and security measures in force in that country."
+    },
+    {
+      "provision_ref": "Art. 10",
+      "chapter": "Chapter C - Rights of the data subject",
+      "section": "Information rights",
+      "title": "Right to information",
+      "content": "The controller shall, at the time of collection of data, inform the data subject of: (a) the identity of the controller; (b) the purpose of the processing; (c) the recipients of the data; (d) the existence of the right of access and the right to rectification. Where the data have not been obtained from the data subject, the controller shall inform the data subject at the time of recording or within a reasonable period."
+    },
+    {
+      "provision_ref": "Art. 11",
+      "chapter": "Chapter C - Rights of the data subject",
+      "section": "Access rights",
+      "title": "Right of access",
+      "content": "Every data subject shall have the right to know whether personal data relating to him are being processed and to receive from the controller: (a) confirmation as to whether data relating to him are being processed and information on the purpose of the processing, the categories of data, and the recipients; (b) communication of the data undergoing processing and their source; (c) knowledge of the logic involved in any automatic processing of data concerning the data subject. The controller shall respond to the data subject within fifteen (15) days of receipt of the request."
+    },
+    {
+      "provision_ref": "Art. 12",
+      "chapter": "Chapter C - Rights of the data subject",
+      "section": "Objection rights",
+      "title": "Right of objection",
+      "content": "The data subject shall have the right to object at any time to the processing of data relating to him. The objection shall be addressed in writing to the controller and shall contain the reasons for the request. The controller shall reply in writing within fifteen (15) days, indicating either the action taken or the reasons for not meeting the request. If the data subject is not satisfied with the reply, he may lodge a complaint with the Authority."
+    },
+    {
+      "provision_ref": "Art. 13",
+      "chapter": "Chapter C - Rights of the data subject",
+      "section": "Rectification rights",
+      "title": "Right to rectification and erasure",
+      "content": "The data subject shall have the right to request the rectification, erasure, or blocking of data the processing of which does not comply with the provisions of this Law, in particular because of the incomplete or inaccurate nature of the data. The controller shall respond within fifteen (15) days and, where appropriate, notify third parties to whom the data have been disclosed, unless this proves impossible or involves a disproportionate effort."
+    },
+    {
+      "provision_ref": "Art. 14",
+      "chapter": "Chapter C - Rights of the data subject",
+      "section": "Judicial protection",
+      "title": "Right to judicial protection",
+      "content": "Any person who has suffered damage as a result of an unlawful processing operation or of any act incompatible with this Law shall be entitled to receive compensation from the controller. The controller shall be exempt from liability if he proves that the damage is not attributable to him. Proceedings shall be brought before the competent civil court. The data subject may also claim moral damages."
+    },
+    {
+      "provision_ref": "Art. 15",
+      "chapter": "Chapter D - Hellenic Data Protection Authority",
+      "section": "Establishment",
+      "title": "Hellenic Data Protection Authority",
+      "content": "The Hellenic Data Protection Authority is hereby established as an independent authority. It shall not be subject to control by any governmental authority or other administrative body. The Authority shall comprise a President and six members, who shall enjoy personal and functional independence. Members shall be appointed by decision of the Conference of Parliamentary Chairmen for a four-year term, renewable once."
+    },
+    {
+      "provision_ref": "Art. 16",
+      "chapter": "Chapter D - Hellenic Data Protection Authority",
+      "section": "Powers",
+      "title": "Powers of the Authority",
+      "content": "The Authority shall have the following powers: (a) to issue directives, recommendations, and guidelines on data protection matters; (b) to grant permits and authorisations required under this Law; (c) to conduct administrative inspections of files and data processing operations; (d) to impose administrative sanctions for violations of this Law; (e) to handle complaints from data subjects; (f) to assist corresponding authorities of other states in cross-border matters."
+    },
+    {
+      "provision_ref": "Art. 17",
+      "chapter": "Chapter D - Hellenic Data Protection Authority",
+      "section": "Powers",
+      "title": "Inspection powers",
+      "content": "The Authority and its employees may, for the purpose of carrying out their duties, access any file of personal data and any equipment used for processing. They may request any information necessary for the exercise of their duties and may seize copies of documents or data. Obstructing the Authority in the exercise of its inspection powers shall constitute a criminal offence punishable by imprisonment."
+    },
+    {
+      "provision_ref": "Art. 18",
+      "chapter": "Chapter E - Security obligations",
+      "section": "Data security",
+      "title": "Confidentiality and security of processing",
+      "content": "Processing of personal data shall be confidential. It shall be carried out exclusively by persons acting under the authority of the controller or the processor and only upon his instructions. The controller shall implement appropriate technical and organisational measures to protect personal data against accidental or unlawful destruction, accidental loss, alteration, unauthorised disclosure, or access. Such measures shall ensure a level of security appropriate to the risks represented by the processing."
+    },
+    {
+      "provision_ref": "Art. 19",
+      "chapter": "Chapter E - Security obligations",
+      "section": "Data security",
+      "title": "Duty of confidentiality",
+      "content": "Any person who, in the course of the exercise of duties or the provision of services relating to data processing, becomes aware of personal data shall be bound by a duty of confidentiality. This obligation shall continue even after the termination of such duties or services. Breach of the duty of confidentiality shall be subject to the criminal penalties provided for in this Law."
+    },
+    {
+      "provision_ref": "Art. 20",
+      "chapter": "Chapter F - Administrative sanctions",
+      "section": "Sanctions",
+      "title": "Administrative sanctions",
+      "content": "The Authority may impose the following administrative sanctions on controllers or processors who violate the provisions of this Law: (a) a warning with a time-limit for the correction of the violation; (b) a fine of EUR 3,000 to EUR 150,000 per violation; (c) a temporary or definitive revocation of a permit or authorisation granted by the Authority; (d) a temporary or definitive prohibition of processing; (e) destruction of the file or non-availability of data."
+    },
+    {
+      "provision_ref": "Art. 21",
+      "chapter": "Chapter G - Criminal sanctions",
+      "section": "Criminal penalties",
+      "title": "Criminal penalties for data protection violations",
+      "content": "Any person who, without authorisation, interferes in any way with a personal data file or obtains access to such data or extracts, alters, damages, destroys, processes, or transmits or announces to third parties personal data from such a file shall be punished with imprisonment. If the perpetrator committed the acts referred to above with the purpose of obtaining for himself or a third party an unlawful benefit or of causing harm to a third party, the penalty shall be imprisonment of at least one year and a fine. If the data are sensitive data, the minimum penalty shall be imprisonment of two years."
+    },
+    {
+      "provision_ref": "Art. 22",
+      "chapter": "Chapter G - Criminal sanctions",
+      "section": "Criminal penalties",
+      "title": "Failure to notify and obstruction",
+      "content": "Any person who intentionally fails to carry out the notification obligation under Article 6 shall be punished by imprisonment of up to two years and a fine. Any person who obstructs the Authority or its employees in the exercise of their duties under Article 17 shall be punished by imprisonment of at least one year."
+    },
+    {
+      "provision_ref": "Art. 23",
+      "chapter": "Chapter H - Final provisions",
+      "section": "Relationship with GDPR",
+      "title": "Relationship with Regulation (EU) 2016/679",
+      "content": "Following the entry into force of Regulation (EU) 2016/679 (General Data Protection Regulation), the provisions of this Law shall apply insofar as they are compatible with the GDPR and are not superseded by the provisions of Law 4624/2019. In case of conflict between this Law and the GDPR, the provisions of the GDPR shall prevail. Articles relating to the Hellenic Data Protection Authority and criminal sanctions remain in force to the extent not replaced by Law 4624/2019."
+    },
+    {
+      "provision_ref": "Art. 24",
+      "chapter": "Chapter H - Final provisions",
+      "section": "Transitional",
+      "title": "Transitional provisions",
+      "content": "Controllers who have commenced data processing operations before the entry into force of this Law shall bring such operations into conformity with its provisions within twenty-four (24) months. Notifications pending before the Authority at the date of entry into force of this Law shall be processed under the provisions of this Law. Permits and authorisations granted under previous legislation shall remain valid until their expiry or revocation by the Authority."
+    }
+  ],
+  "definitions": [
+    {
+      "term": "Δεδομένα προσωπικού χαρακτήρα (Personal data)",
+      "definition": "Any information relating to an identified or identifiable natural person (data subject).",
+      "source_provision": "Art. 2"
+    },
+    {
+      "term": "Ευαίσθητα δεδομένα (Sensitive data)",
+      "definition": "Data relating to racial or ethnic origin, political opinions, religious or philosophical beliefs, trade-union membership, health, social welfare, and sexual life, as well as data relating to criminal prosecutions or convictions.",
+      "source_provision": "Art. 2"
+    },
+    {
+      "term": "Υπεύθυνος επεξεργασίας (Controller)",
+      "definition": "Any person who determines the purposes and means of the processing of personal data.",
+      "source_provision": "Art. 2"
+    }
+  ]
+}

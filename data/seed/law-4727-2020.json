@@ -1,0 +1,185 @@
+{
+  "id": "law-4727-2020",
+  "type": "statute",
+  "title": "Νόμος 4727/2020 - Ψηφιακή Διακυβέρνηση (Ενσωμάτωση στην Ελληνική Νομοθεσία της Οδηγίας (ΕΕ) 2016/2102 και άλλες διατάξεις)",
+  "title_en": "Law 4727/2020 on Digital Governance (transposing Directive (EU) 2016/2102 on web accessibility and other provisions)",
+  "short_name": "Digital Governance Law",
+  "status": "in_force",
+  "issued_date": "2020-09-23",
+  "in_force_date": "2020-09-23",
+  "url": "https://www.et.gr",
+  "description": "Comprehensive Greek law on digital governance establishing digital-by-default principles, the gov.gr unified public service portal, digital certificates and authentication, web accessibility requirements (transposing Directive (EU) 2016/2102), and the framework for the National Register of Procedures and Services.",
+  "provisions": [
+    {
+      "provision_ref": "Art. 1",
+      "chapter": "Part One - General Provisions",
+      "section": "Scope and purpose",
+      "title": "Purpose",
+      "content": "This Law establishes the principles and rules for the digital transformation of the public sector, promoting the digital-by-default delivery of public services, and transposes into national law Directive (EU) 2016/2102 of the European Parliament and of the Council of 26 October 2016 on the accessibility of the websites and mobile applications of public sector bodies. It also lays down the framework for digital certificates, electronic identification, and interoperability of public digital services."
+    },
+    {
+      "provision_ref": "Art. 2",
+      "chapter": "Part One - General Provisions",
+      "section": "Definitions",
+      "title": "Definitions",
+      "content": "For the purposes of this Law: (a) 'digital-by-default' means that public services are designed and delivered primarily through digital channels; (b) 'gov.gr' means the Unified Digital Portal of the Public Administration through which public services are provided electronically; (c) 'digital certificate' means an electronic document issued through gov.gr that has the same legal validity as the corresponding paper document; (d) 'web accessibility' means the extent to which websites and mobile applications of public sector bodies are perceivable, operable, understandable, and robust, in accordance with the Web Content Accessibility Guidelines (WCAG) 2.1."
+    },
+    {
+      "provision_ref": "Art. 3",
+      "chapter": "Part One - General Provisions",
+      "section": "Principles",
+      "title": "Fundamental principles of digital governance",
+      "content": "The digital governance of the public sector shall be based on: (a) the digital-by-default principle — all public services shall be offered through digital channels as the primary means; (b) the once-only principle — citizens and businesses shall supply the same data only once to public administration; (c) inclusiveness — no citizen shall be excluded from accessing public services due to lack of digital skills or access; (d) interoperability by design — public information systems shall be designed for interoperability from inception; (e) trust and security — digital public services shall guarantee high levels of trust and information security, including protection of personal data in accordance with Regulation (EU) 2016/679."
+    },
+    {
+      "provision_ref": "Art. 4",
+      "chapter": "Part Two - Unified Digital Portal (gov.gr)",
+      "section": "Establishment",
+      "title": "Unified Digital Portal (gov.gr)",
+      "content": "The Unified Digital Portal of the Public Administration (gov.gr) is hereby established as the single point of access to digital public services. All public sector bodies shall make their services available through gov.gr. The portal shall provide: (a) information on all public services, including requirements, fees, and processing times; (b) electronic submission of applications and documents; (c) electronic issuance of certificates and administrative acts; (d) electronic payment of fees and charges."
+    },
+    {
+      "provision_ref": "Art. 5",
+      "chapter": "Part Two - Unified Digital Portal (gov.gr)",
+      "section": "Digital certificates",
+      "title": "Digital certificates and documents",
+      "content": "Digital certificates and documents issued through gov.gr shall bear a unique verification code (QR code or alphanumeric code) enabling their authenticity to be verified by any interested party. Digital certificates shall have the same legal validity and evidentiary value as paper documents issued by public sector bodies. No public or private entity may refuse to accept a digital certificate issued through gov.gr. Digital certificates shall be signed with a qualified electronic seal of the issuing public sector body."
+    },
+    {
+      "provision_ref": "Art. 6",
+      "chapter": "Part Two - Unified Digital Portal (gov.gr)",
+      "section": "Authentication",
+      "title": "Electronic identification and authentication",
+      "content": "Access to digital public services through gov.gr shall require authentication via the national electronic identification scheme, which shall comply with Regulation (EU) No 910/2014 (eIDAS). Authentication may be performed using: (a) credentials issued by the Tax Information System (TaxisNet); (b) credentials issued by the social security system (AMKA); (c) the national electronic identity card, when available; (d) electronic identification means notified by other EU Member States at the required assurance level."
+    },
+    {
+      "provision_ref": "Art. 7",
+      "chapter": "Part Two - Unified Digital Portal (gov.gr)",
+      "section": "Digital services",
+      "title": "Electronic authorisations (eAuthorisations)",
+      "content": "Citizens may grant electronic authorisations (eAuthorisations) through gov.gr, authorising other natural or legal persons to carry out specific administrative acts or receive specific public services on their behalf. Electronic authorisations shall have the same legal effect as powers of attorney or written authorisations. The system of eAuthorisations shall ensure the identity of the grantor and the scope of the authorisation."
+    },
+    {
+      "provision_ref": "Art. 8",
+      "chapter": "Part Three - Web Accessibility",
+      "section": "Requirements",
+      "title": "Web accessibility requirements",
+      "content": "Websites and mobile applications of public sector bodies shall be accessible in conformity with the harmonised European standard EN 301 549 V2.1.2, which corresponds to the Web Content Accessibility Guidelines (WCAG) 2.1, Level AA. This requirement transposes Directive (EU) 2016/2102. Public sector bodies shall ensure that their websites and mobile applications are perceivable, operable, understandable, and robust, taking into account the needs of persons with disabilities."
+    },
+    {
+      "provision_ref": "Art. 9",
+      "chapter": "Part Three - Web Accessibility",
+      "section": "Requirements",
+      "title": "Accessibility statement",
+      "content": "Each public sector body shall publish an accessibility statement on its website and mobile application, using the model adopted by the European Commission. The accessibility statement shall include: (a) a description of the accessibility features of the website or mobile application; (b) any inaccessible content and the reasons for its inaccessibility; (c) a link to the feedback mechanism; (d) a link to the enforcement procedure. The accessibility statement shall be updated annually."
+    },
+    {
+      "provision_ref": "Art. 10",
+      "chapter": "Part Three - Web Accessibility",
+      "section": "Monitoring",
+      "title": "Monitoring and enforcement",
+      "content": "The Ministry of Digital Governance shall be responsible for monitoring compliance with the web accessibility requirements. Monitoring shall be carried out using the methodology adopted by the European Commission in accordance with Directive (EU) 2016/2102. The Ministry shall publish a report on the outcome of monitoring activities every three years and shall submit it to the European Commission. Non-compliant public sector bodies shall be required to bring their websites and mobile applications into compliance within a reasonable timeframe."
+    },
+    {
+      "provision_ref": "Art. 11",
+      "chapter": "Part Three - Web Accessibility",
+      "section": "Monitoring",
+      "title": "Feedback mechanism and enforcement procedure",
+      "content": "Public sector bodies shall establish a feedback mechanism enabling any person to notify the body of the failure of its website or mobile application to comply with the accessibility requirements. The body shall respond to the notification within a reasonable time. Where the body fails to respond adequately, the person may submit a complaint to the Ministry of Digital Governance, which shall investigate and take appropriate enforcement action."
+    },
+    {
+      "provision_ref": "Art. 12",
+      "chapter": "Part Four - Interoperability",
+      "section": "Framework",
+      "title": "Greek Interoperability Framework",
+      "content": "The Greek Interoperability Framework (GIF) shall ensure seamless data exchange between public sector information systems. The GIF shall be aligned with the European Interoperability Framework (EIF) and shall cover: (a) legal interoperability; (b) organisational interoperability; (c) semantic interoperability; (d) technical interoperability. The Centre for eGovernment (KEK) shall maintain the GIF and provide technical support to public sector bodies."
+    },
+    {
+      "provision_ref": "Art. 13",
+      "chapter": "Part Four - Interoperability",
+      "section": "Data exchange",
+      "title": "Data exchange services",
+      "content": "The Government Services Bus (GSB) shall serve as the central interoperability infrastructure for real-time data exchange between public sector information systems. All public sector bodies connected to the GSB shall expose and consume data services in accordance with the standards specified by the GIF. The development of new public sector information systems shall mandatorily include connection to the GSB."
+    },
+    {
+      "provision_ref": "Art. 14",
+      "chapter": "Part Four - Interoperability",
+      "section": "Once-only principle",
+      "title": "Once-only principle implementation",
+      "content": "Public sector bodies shall not require citizens or businesses to provide information that is already held by another public sector body and can be retrieved through the GSB or other interoperability services. The implementation of the once-only principle shall comply with data protection requirements under Regulation (EU) 2016/679 and Law 4624/2019, including purpose limitation and data minimisation. Citizens shall have the right to be informed about inter-administrative data exchanges concerning them."
+    },
+    {
+      "provision_ref": "Art. 15",
+      "chapter": "Part Five - National Register",
+      "section": "Register of Procedures",
+      "title": "National Register of Public Administration Procedures",
+      "content": "The National Register of Public Administration Procedures and Services shall be established and maintained by the Ministry of Digital Governance. The Register shall contain a comprehensive catalogue of all administrative procedures and services provided by public sector bodies, including: (a) the legal basis of each procedure; (b) the required documents and supporting evidence; (c) the competent authority and processing timeframes; (d) the available digital channels."
+    },
+    {
+      "provision_ref": "Art. 16",
+      "chapter": "Part Five - National Register",
+      "section": "Simplification",
+      "title": "Simplification of administrative procedures",
+      "content": "All administrative procedures registered in the National Register shall be reviewed for simplification. Simplification shall aim to: (a) eliminate unnecessary requirements and supporting documents; (b) reduce processing times; (c) enable full digital processing from submission to decision; (d) ensure compliance with the once-only principle. The Ministry of Digital Governance shall issue annual simplification targets and report on progress to the Hellenic Parliament."
+    },
+    {
+      "provision_ref": "Art. 17",
+      "chapter": "Part Six - Information Security and Data Protection",
+      "section": "Security framework",
+      "title": "Public sector information security framework",
+      "content": "Public sector bodies shall implement information security policies and practices in accordance with international standards (ISO/IEC 27001) and national guidelines issued by the National Cybersecurity Authority. Each public sector body shall: (a) designate an Information Security Officer; (b) conduct periodic risk assessments; (c) implement appropriate technical and organisational measures; (d) report security incidents to the National CSIRT. The Ministry of Digital Governance shall issue minimum security standards for public sector digital services."
+    },
+    {
+      "provision_ref": "Art. 18",
+      "chapter": "Part Six - Information Security and Data Protection",
+      "section": "Data protection",
+      "title": "Data protection in digital governance",
+      "content": "The processing of personal data in the context of digital governance shall comply with Regulation (EU) 2016/679 (GDPR) and Law 4624/2019. Data Protection Impact Assessments shall be conducted for digital public services involving the processing of personal data likely to result in a high risk to the rights and freedoms of natural persons. The Hellenic Data Protection Authority shall be consulted on the design of digital public services that involve large-scale processing of personal data."
+    },
+    {
+      "provision_ref": "Art. 19",
+      "chapter": "Part Seven - Digital Skills and Governance Bodies",
+      "section": "Digital skills",
+      "title": "National Digital Skills Programme",
+      "content": "The Ministry of Digital Governance shall develop and implement a National Digital Skills Programme aimed at: (a) enhancing the digital skills of public sector employees; (b) providing digital literacy training to citizens, with priority for vulnerable groups; (c) promoting advanced digital skills in areas such as data analysis, cybersecurity, and artificial intelligence; (d) certifying digital competences in accordance with the European Digital Competence Framework (DigComp)."
+    },
+    {
+      "provision_ref": "Art. 20",
+      "chapter": "Part Seven - Digital Skills and Governance Bodies",
+      "section": "Governance",
+      "title": "General Secretary for Digital Governance and Simplification",
+      "content": "The General Secretary for Digital Governance and Simplification shall be responsible for: (a) coordinating the digital transformation of the public sector; (b) overseeing the operation of gov.gr and the National Register of Procedures; (c) monitoring the implementation of the once-only principle and interoperability; (d) proposing legislative and regulatory reforms for the simplification of administrative procedures. The General Secretary shall report directly to the Minister of Digital Governance."
+    },
+    {
+      "provision_ref": "Art. 21",
+      "chapter": "Part Eight - Final and Transitional Provisions",
+      "section": "Transitional",
+      "title": "Transitional provisions",
+      "content": "Public sector bodies shall make their services available through gov.gr within twenty-four (24) months of the entry into force of this Law. Existing websites and mobile applications of public sector bodies shall comply with the web accessibility requirements within twelve (12) months for websites and twenty-four (24) months for mobile applications. The National Register of Procedures shall be operational within twelve (12) months of the entry into force of this Law."
+    },
+    {
+      "provision_ref": "Art. 22",
+      "chapter": "Part Eight - Final and Transitional Provisions",
+      "section": "Delegation",
+      "title": "Delegated acts and implementing decisions",
+      "content": "The Minister of Digital Governance may issue ministerial decisions specifying: (a) the technical standards and protocols for gov.gr; (b) the format and content of digital certificates; (c) the criteria for assessing web accessibility; (d) the minimum interoperability requirements for public sector information systems. Such decisions shall be published in the Government Gazette and shall enter into force on the date of their publication."
+    }
+  ],
+  "definitions": [
+    {
+      "term": "Ψηφιακή Διακυβέρνηση (Digital governance)",
+      "definition": "The design, delivery, and management of public services and administrative processes primarily through digital channels and information and communications technologies.",
+      "source_provision": "Art. 2"
+    },
+    {
+      "term": "gov.gr",
+      "definition": "The Unified Digital Portal of the Public Administration through which public services are provided electronically to citizens and businesses.",
+      "source_provision": "Art. 2"
+    },
+    {
+      "term": "Ψηφιακό πιστοποιητικό (Digital certificate)",
+      "definition": "An electronic document issued through gov.gr that has the same legal validity as the corresponding paper document issued by public sector bodies.",
+      "source_provision": "Art. 2"
+    }
+  ]
+}

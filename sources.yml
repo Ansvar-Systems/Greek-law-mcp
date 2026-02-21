@@ -1,0 +1,25 @@
+schema_version: "1.0"
+mcp_name: "Greek Law MCP"
+jurisdiction: "GR"
+
+sources:
+  - name: "ET (Εφημερίδα της Κυβερνήσεως) / legislation.gr"
+    authority: "Εθνικό Τυπογραφείο (National Printing Office of Greece)"
+    official_portal: "https://www.et.gr"
+    retrieval_method: "HTML_SCRAPE"
+    update_frequency: "weekly"
+    last_ingested: "2026-02-21"
+    license_or_terms:
+      type: "Greek Government Open Data (public domain under Greek Copyright Act Art. 2)"
+      url: "https://www.et.gr"
+      summary: "Official legislative texts are public domain"
+    coverage:
+      scope: "Key Greek legislation covering data protection, cybersecurity, e-commerce, criminal law cyber provisions, and related statutes"
+      limitations: "AI-generated seed data; full official ingestion pending"
+    languages:
+      - "el"
+
+data_freshness:
+  automated_checks: true
+  check_frequency: "weekly"
+  last_verified: "2026-02-21"

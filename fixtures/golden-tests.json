@@ -1,0 +1,183 @@
+{
+  "$schema": "./golden-tests.schema.json",
+  "version": "1.0",
+  "mcp_name": "Greek Law MCP",
+  "description": "Golden contract tests for the Greek Law MCP -- 12 tests covering article retrieval, search, citation, cross-reference, and negative cases",
+  "tests": [
+    {
+      "id": "gr-001",
+      "category": "article_retrieval",
+      "description": "Retrieve GDPR Implementation Law Art. 1 (Law 4624/2019) -- subject matter and scope of GDPR implementing provisions",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "Law 4624/2019 on the Hellenic Data Protection Authority",
+        "article": "Art. 1"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "any_result_contains": ["personal data", "Regulation (EU) 2016/679", "GDPR", "protection"],
+        "fields_present": ["text", "article_number"],
+        "text_not_empty": true
+      }
+    },
+    {
+      "id": "gr-002",
+      "category": "article_retrieval",
+      "description": "Retrieve NIS Implementation Law Art. 1 (Law 4577/2018) -- scope of network and information systems security",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "NIS Implementation Law",
+        "article": "Art. 1"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "any_result_contains": ["Directive (EU) 2016/1148", "network and information systems", "security", "NIS"],
+        "fields_present": ["text", "article_number"],
+        "text_not_empty": true
+      }
+    },
+    {
+      "id": "gr-003",
+      "category": "article_retrieval",
+      "description": "Retrieve Penal Code cybercrime Art. 370B(1) -- unauthorised access to computer systems",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "Penal Code Cybercrime",
+        "article": "Art. 370B(1)"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "any_result_contains": ["access", "computer system", "data", "security"],
+        "fields_present": ["text", "article_number"],
+        "text_not_empty": true
+      }
+    },
+    {
+      "id": "gr-004",
+      "category": "article_retrieval",
+      "description": "Retrieve Digital Governance Law Art. 4 (Law 4727/2020) -- gov.gr unified digital portal",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "Digital Governance Law",
+        "article": "Art. 4"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "any_result_contains": ["gov.gr", "digital", "portal", "public services"],
+        "fields_present": ["text"],
+        "text_not_empty": true
+      }
+    },
+    {
+      "id": "gr-005",
+      "category": "search",
+      "description": "Full-text search for 'personal data' returns GDPR and data protection provisions",
+      "tool": "search_legislation",
+      "input": {
+        "query": "personal data"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "min_results": 1,
+        "any_result_contains": ["personal data", "data protection", "GDPR", "processing"]
+      }
+    },
+    {
+      "id": "gr-006",
+      "category": "search",
+      "description": "Full-text search for 'cybersecurity' returns NIS and cybercrime provisions",
+      "tool": "search_legislation",
+      "input": {
+        "query": "cybersecurity"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "min_results": 1,
+        "any_result_contains": ["cybersecurity", "security", "network", "information systems"]
+      }
+    },
+    {
+      "id": "gr-007",
+      "category": "search",
+      "description": "Full-text search for 'trade secret' returns Law 1733/1987 provisions",
+      "tool": "search_legislation",
+      "input": {
+        "query": "trade secret"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "min_results": 1,
+        "any_result_contains": ["trade secret", "confidential", "commercial", "unlawful"]
+      }
+    },
+    {
+      "id": "gr-008",
+      "category": "citation_roundtrip",
+      "description": "Citation for E-Commerce Decree Art. 1 (PD 131/2003) includes et.gr URL pattern",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "E-Commerce Decree",
+        "article": "Art. 1"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "citation_url_pattern": "et\\.gr",
+        "text_not_empty": true
+      }
+    },
+    {
+      "id": "gr-009",
+      "category": "citation_roundtrip",
+      "description": "Citation for Electronic Communications Law Art. 3 includes EETT reference",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "Electronic Communications Law",
+        "article": "Art. 3"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "any_result_contains": ["EETT", "Hellenic Telecommunications"],
+        "text_not_empty": true
+      }
+    },
+    {
+      "id": "gr-010",
+      "category": "eu_cross_reference",
+      "description": "Law 4624/2019 cross-reference to EU GDPR -- Greek GDPR implementation references Regulation (EU) 2016/679",
+      "tool": "get_provision_eu_basis",
+      "input": {
+        "law_identifier": "GDPR Implementation Law"
+      },
+      "assertions": {
+        "result_not_empty": true,
+        "any_result_contains": ["GDPR", "General Data Protection Regulation", "2016/679"]
+      }
+    },
+    {
+      "id": "gr-011",
+      "category": "negative_test",
+      "description": "Non-existent Greek law returns graceful error or empty result",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "Νόμος 9999/2099 περί φανταστικών ζητημάτων",
+        "article": "1"
+      },
+      "assertions": {
+        "handles_gracefully": true
+      }
+    },
+    {
+      "id": "gr-012",
+      "category": "negative_test",
+      "description": "Malformed article number returns graceful error or empty result",
+      "tool": "get_provision",
+      "input": {
+        "law_identifier": "GDPR Implementation Law",
+        "article": "999ZZZ-INVALID"
+      },
+      "assertions": {
+        "handles_gracefully": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,185 @@
+{
+  "id": "law-4577-2018-nis",
+  "type": "statute",
+  "title": "Νόμος 4577/2018 - Ενσωμάτωση στην ελληνική νομοθεσία της Οδηγίας (ΕΕ) 2016/1148 σχετικά με την ασφάλεια συστημάτων δικτύου και πληροφοριών",
+  "title_en": "Law 4577/2018 transposing Directive (EU) 2016/1148 concerning measures for a high common level of security of network and information systems (NIS Directive)",
+  "short_name": "NIS Implementation Law",
+  "status": "in_force",
+  "issued_date": "2018-12-03",
+  "in_force_date": "2018-12-03",
+  "url": "https://www.et.gr",
+  "description": "Greek transposition of the NIS Directive (EU) 2016/1148. Establishes a national framework for cybersecurity, identifies operators of essential services, sets security and incident notification requirements, and designates national competent authorities and CSIRTs.",
+  "provisions": [
+    {
+      "provision_ref": "Art. 1",
+      "chapter": "Chapter A - General Provisions",
+      "section": "Subject matter and scope",
+      "title": "Subject matter",
+      "content": "This Law transposes into Greek law Directive (EU) 2016/1148 of the European Parliament and of the Council of 6 July 2016 concerning measures for a high common level of security of network and information systems across the Union (NIS Directive). It establishes measures to achieve a high common level of security of network and information systems within the territory of the Hellenic Republic."
+    },
+    {
+      "provision_ref": "Art. 2",
+      "chapter": "Chapter A - General Provisions",
+      "section": "Subject matter and scope",
+      "title": "Scope of application",
+      "content": "This Law applies to operators of essential services as identified pursuant to Article 5 and to digital service providers offering services within the territory of the Hellenic Republic. It does not apply to undertakings subject to the requirements of Directive 2002/21/EC (Framework Directive for electronic communications) or to trust service providers subject to Regulation (EU) No 910/2014 (eIDAS)."
+    },
+    {
+      "provision_ref": "Art. 3",
+      "chapter": "Chapter A - General Provisions",
+      "section": "Definitions",
+      "title": "Definitions",
+      "content": "For the purposes of this Law: (a) 'network and information system' means an electronic communications network within the meaning of Directive 2002/21/EC, any device or group of interconnected devices carrying out automatic processing of digital data, or digital data stored, processed, retrieved, or transmitted for the purposes of their operation, use, protection, and maintenance; (b) 'security of network and information systems' means the ability of such systems to resist actions that compromise availability, authenticity, integrity, or confidentiality; (c) 'incident' means any event having an actual adverse effect on the security of network and information systems."
+    },
+    {
+      "provision_ref": "Art. 4",
+      "chapter": "Chapter A - General Provisions",
+      "section": "Definitions",
+      "title": "Additional definitions",
+      "content": "For the purposes of this Law: (a) 'operator of essential services' means a public or private entity belonging to a sector listed in Annex II of Directive (EU) 2016/1148 that provides a service essential for the maintenance of critical societal or economic activities, the provision of which depends on network and information systems, and where an incident would have significant disruptive effects; (b) 'digital service provider' means any legal person that provides a digital service within the meaning of Directive (EU) 2015/1535; (c) 'national single point of contact' means the authority designated to coordinate issues related to the security of network and information systems."
+    },
+    {
+      "provision_ref": "Art. 5",
+      "chapter": "Chapter B - National Framework",
+      "section": "Identification of operators",
+      "title": "Identification of operators of essential services",
+      "content": "The competent authorities shall identify operators of essential services established in the Hellenic Republic for each sector referred to in Annex II of Directive (EU) 2016/1148. Identification criteria shall include: (a) the entity provides a service essential for the maintenance of critical societal or economic activities; (b) the provision of that service depends on network and information systems; (c) an incident would have significant disruptive effects on the provision of that service. The list of identified operators shall be updated at least every two years."
+    },
+    {
+      "provision_ref": "Art. 6",
+      "chapter": "Chapter B - National Framework",
+      "section": "Competent authorities",
+      "title": "National competent authorities",
+      "content": "The Ministry of Digital Governance shall serve as the national competent authority for the security of network and information systems. The Ministry shall be responsible for monitoring the application of this Law, issuing binding instructions and guidelines to operators of essential services and digital service providers, and coordinating with other national authorities. Sectoral competent authorities may be designated by joint ministerial decision for specific sectors."
+    },
+    {
+      "provision_ref": "Art. 7",
+      "chapter": "Chapter B - National Framework",
+      "section": "Competent authorities",
+      "title": "National single point of contact",
+      "content": "The Ministry of Digital Governance shall serve as the national single point of contact for the purposes of ensuring cross-border cooperation with other Member States, the Cooperation Group, and the CSIRTs network referred to in Directive (EU) 2016/1148. The single point of contact shall submit consolidated annual reports to the Cooperation Group on the notifications received, including the number of notifications and the nature of the incidents."
+    },
+    {
+      "provision_ref": "Art. 8",
+      "chapter": "Chapter B - National Framework",
+      "section": "CSIRT",
+      "title": "National CSIRT",
+      "content": "The National CSIRT (Computer Security Incident Response Team) shall be established within the National Cybersecurity Authority. The CSIRT shall be responsible for: (a) monitoring incidents at the national level; (b) providing early warning, alerts, announcements, and dissemination of information to relevant stakeholders about risks and incidents; (c) responding to incidents; (d) providing dynamic risk and incident analysis and situational awareness; (e) participating in the CSIRTs network established under Directive (EU) 2016/1148."
+    },
+    {
+      "provision_ref": "Art. 9",
+      "chapter": "Chapter B - National Framework",
+      "section": "Strategy",
+      "title": "National cybersecurity strategy",
+      "content": "The Hellenic Republic shall adopt a national cybersecurity strategy defining the strategic objectives and appropriate policy and regulatory measures to achieve and maintain a high level of security of network and information systems. The strategy shall address: (a) the objectives and priorities; (b) a governance framework; (c) identification of measures relating to preparedness, response, and recovery; (d) education, awareness, and training programmes; (e) research and development plans; (f) a risk assessment plan; (g) the list of actors involved in implementation."
+    },
+    {
+      "provision_ref": "Art. 10",
+      "chapter": "Chapter C - Security Requirements",
+      "section": "Obligations of operators",
+      "title": "Security requirements for operators of essential services",
+      "content": "Operators of essential services shall take appropriate and proportionate technical and organisational measures to manage the risks posed to the security of the network and information systems which they use in their operations. Such measures shall ensure a level of security appropriate to the risk, taking into account the state of the art and the following elements: (a) security of systems and facilities; (b) incident handling; (c) business continuity management; (d) monitoring, auditing, and testing; (e) compliance with international standards."
+    },
+    {
+      "provision_ref": "Art. 11",
+      "chapter": "Chapter C - Security Requirements",
+      "section": "Obligations of operators",
+      "title": "Incident notification by operators of essential services",
+      "content": "Operators of essential services shall without undue delay notify the national competent authority or the CSIRT of incidents having a significant impact on the continuity of the essential services they provide. Notifications shall include information enabling the competent authority to determine any cross-border impact of the incident. Determination of the significance of the impact shall take into account: (a) the number of users affected; (b) the duration of the incident; (c) the geographical spread; (d) the extent of disruption to the service; (e) the extent of the impact on economic and societal activities."
+    },
+    {
+      "provision_ref": "Art. 12",
+      "chapter": "Chapter C - Security Requirements",
+      "section": "Digital service providers",
+      "title": "Security requirements for digital service providers",
+      "content": "Digital service providers shall identify and take appropriate and proportionate technical and organisational measures to manage the risks posed to the security of network and information systems which they use to offer services within the Union, in accordance with Article 16 of Directive (EU) 2016/1148. Such measures shall take into account: (a) the security of systems and facilities; (b) incident handling; (c) business continuity management; (d) monitoring, auditing, and testing; (e) compliance with international standards."
+    },
+    {
+      "provision_ref": "Art. 13",
+      "chapter": "Chapter C - Security Requirements",
+      "section": "Digital service providers",
+      "title": "Incident notification by digital service providers",
+      "content": "Digital service providers shall without undue delay notify the competent authority or the CSIRT of any incident having a substantial impact on the provision of a service listed in Annex III of Directive (EU) 2016/1148 that they offer within the Union. The parameters for determining whether the impact is substantial shall include: (a) the number of users affected; (b) the duration of the incident; (c) the geographical spread; (d) the extent of disruption; (e) the extent of the impact on economic and societal activities."
+    },
+    {
+      "provision_ref": "Art. 14",
+      "chapter": "Chapter D - Supervision and Enforcement",
+      "section": "Supervision",
+      "title": "Supervision of operators of essential services",
+      "content": "The competent authority shall have the power to: (a) require operators of essential services to provide information necessary for assessing the security of their network and information systems, including documented security policies; (b) require operators to undergo a security audit carried out by a qualified independent body or the competent authority and make the results available to the competent authority; (c) issue binding instructions to operators to remedy deficiencies identified."
+    },
+    {
+      "provision_ref": "Art. 15",
+      "chapter": "Chapter D - Supervision and Enforcement",
+      "section": "Supervision",
+      "title": "Supervision of digital service providers",
+      "content": "Where the competent authority becomes aware, through supervisory activities or otherwise, including by information provided by other Member States' competent authorities, that a digital service provider does not comply with the requirements of this Law, the competent authority shall take supervisory measures. The competent authority shall act upon evidence that a digital service provider established in Greece does not meet its security or notification obligations."
+    },
+    {
+      "provision_ref": "Art. 16",
+      "chapter": "Chapter D - Supervision and Enforcement",
+      "section": "Enforcement",
+      "title": "Administrative sanctions",
+      "content": "In the event of non-compliance with the obligations laid down in this Law, the competent authority may impose administrative fines of up to EUR 200,000 on operators of essential services and up to EUR 100,000 on digital service providers. In determining the amount of the fine, the competent authority shall take into account: (a) the gravity of the infringement; (b) the duration of the infringement; (c) previous infringements; (d) measures taken by the entity to mitigate the damage; (e) the degree of cooperation with the competent authority."
+    },
+    {
+      "provision_ref": "Art. 17",
+      "chapter": "Chapter D - Supervision and Enforcement",
+      "section": "Enforcement",
+      "title": "Corrective measures",
+      "content": "Without prejudice to the imposition of administrative fines, the competent authority may issue binding decisions requiring operators of essential services and digital service providers to: (a) remedy identified deficiencies within a specified timeframe; (b) implement specific security measures; (c) inform affected users of incidents that may adversely affect them. Non-compliance with a binding decision shall constitute an aggravating factor for the purpose of determining administrative fines."
+    },
+    {
+      "provision_ref": "Art. 18",
+      "chapter": "Chapter E - Cooperation",
+      "section": "National cooperation",
+      "title": "National cooperation and information exchange",
+      "content": "The competent authorities, the CSIRT, and other relevant national authorities shall cooperate and exchange information necessary for the effective implementation of this Law. Such cooperation shall include the establishment of secure communication channels and the sharing of threat intelligence. Information exchanged shall be treated as confidential where disclosure could compromise the security of network and information systems."
+    },
+    {
+      "provision_ref": "Art. 19",
+      "chapter": "Chapter E - Cooperation",
+      "section": "EU cooperation",
+      "title": "Participation in the Cooperation Group",
+      "content": "Greece shall participate in the Cooperation Group established under Article 11 of Directive (EU) 2016/1148, composed of representatives of Member States, the European Commission, and ENISA. The Cooperation Group shall carry out its tasks in accordance with Article 11(3) of the NIS Directive, including providing strategic guidance to the CSIRTs network, exchanging best practices on incident notification, and discussing capabilities and preparedness."
+    },
+    {
+      "provision_ref": "Art. 20",
+      "chapter": "Chapter E - Cooperation",
+      "section": "EU cooperation",
+      "title": "Participation in the CSIRTs network",
+      "content": "The Greek CSIRT shall participate in the CSIRTs network established under Article 12 of Directive (EU) 2016/1148. The network shall contribute to building confidence and trust between Member States and promote swift operational cooperation. The CSIRT shall share information on incidents and cooperate in the response to incidents having a cross-border dimension. Participation shall include exchange of information on tools and procedures and joint exercises."
+    },
+    {
+      "provision_ref": "Art. 21",
+      "chapter": "Chapter F - Final Provisions",
+      "section": "Transitional provisions",
+      "title": "Transitional provisions",
+      "content": "Operators of essential services identified pursuant to this Law shall comply with the security requirements set out in Article 10 within twelve (12) months of the date of their identification. Existing security measures and incident response procedures implemented by entities prior to the entry into force of this Law shall be taken into account when assessing compliance. Joint ministerial decisions necessary for the implementation of this Law shall be issued within six (6) months of its entry into force."
+    },
+    {
+      "provision_ref": "Art. 22",
+      "chapter": "Chapter F - Final Provisions",
+      "section": "Delegation",
+      "title": "Delegated provisions",
+      "content": "By joint decision of the Minister of Digital Governance and the relevant sectoral Minister, further details may be specified regarding: (a) the criteria for identifying operators of essential services; (b) the security requirements applicable to specific sectors; (c) the format and procedures for incident notifications; (d) the framework for security audits. Such decisions shall be published in the Government Gazette."
+    }
+  ],
+  "definitions": [
+    {
+      "term": "Δίκτυο και σύστημα πληροφοριών (Network and information system)",
+      "definition": "An electronic communications network, any device or group of interconnected devices carrying out automatic processing of digital data, or digital data stored, processed, retrieved, or transmitted for operation, use, protection, and maintenance purposes.",
+      "source_provision": "Art. 3"
+    },
+    {
+      "term": "Φορέας εκμετάλλευσης βασικών υπηρεσιών (Operator of essential services)",
+      "definition": "A public or private entity providing a service essential for the maintenance of critical societal or economic activities, the provision of which depends on network and information systems.",
+      "source_provision": "Art. 4"
+    },
+    {
+      "term": "Συμβάν (Incident)",
+      "definition": "Any event having an actual adverse effect on the security of network and information systems.",
+      "source_provision": "Art. 3"
+    }
+  ]
+}
