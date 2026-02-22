@@ -17,6 +17,7 @@ npm run ingest:country-fulltext -- --status-every 200
 ```
 
 The run is resumable and writes per-document enriched seeds under `data/seed/_country-fulltext/`.
+Current deferred OCR/text extraction gaps are tracked in `OCR_GAPS.md` and `gaps/ocr-gaps.json`.
 
 **MCP Registry:** `eu.ansvar/greek-law-mcp`
 **npm:** `@ansvar/greek-law-mcp`

@@ -90,3 +90,18 @@ All required checks passed:
 - **Full-text article extraction is authoritative and source-derived for the refreshed target set.**
 - **Full country-wide article extraction for all 21k+ records was not executed in this run** due runtime/storage scale; country-wide records currently carry official metadata + FEK URLs, and target acts carry parsed provisions/definitions.
 - No legal text was fabricated; all stored text originates from official FEK PDFs.
+
+## 8) Deferred OCR/Text Gaps (Backlog)
+
+From the latest resumable non-OCR country full-text pass snapshot:
+- Full-text records written locally: **5,686 / 21,109** (**26.94%**)
+- Extraction failures currently logged: **56**
+
+Gap handling policy:
+- Failed records are explicitly tracked as backlog (not silently dropped).
+- No synthetic or fabricated legal text is inserted.
+- Records remain available via official metadata + FEK URL until OCR remediation.
+
+Backlog artifacts:
+- `OCR_GAPS.md`
+- `gaps/ocr-gaps.json`

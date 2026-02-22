@@ -6,3 +6,5 @@ dist/
 .vercel
 .DS_Store
 coverage/
+data/seed/_country-fulltext/
+data/seed/_country-fulltext-progress.json
