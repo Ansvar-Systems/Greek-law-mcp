@@ -1,22 +1,25 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import Database from 'better-sqlite3';
+import { existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const DB_PATH = join(__dirname, '..', 'data', 'database.db');
+const HAS_DB = existsSync(DB_PATH);
 
 let db: InstanceType<typeof Database>;
 
 beforeAll(() => {
+  if (!HAS_DB) return;
   db = new Database(DB_PATH, { readonly: true });
 });
 
 afterAll(() => {
-  db.close();
+  if (db) db.close();
 });
 
-describe('Greek Law MCP Database (official FEK ingestion mode)', () => {
+describe.skipIf(!HAS_DB)('Greek Law MCP Database (official FEK ingestion mode)', () => {
   describe('Schema', () => {
     it('has legal_documents table', () => {
       const row = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='legal_documents'").get();
