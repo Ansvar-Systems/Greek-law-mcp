@@ -1,0 +1,293 @@
+{
+  "generated_at": "2026-02-22T07:34:07.506Z",
+  "source_progress_file": "data/seed/_country-fulltext-progress.json",
+  "scope": "country_fulltext_non_ocr_pass",
+  "total_documents": 21109,
+  "fulltext_documents_written": 5686,
+  "completion_ratio": 0.269364,
+  "completion_percent": 26.94,
+  "failures_seen_in_current_pass": 56,
+  "failures": [
+    {
+      "id": "pd-76-2002-sid-246715",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2002/20020100056.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2862-2000-sid-213062",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100256.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2845-2000-sid-213035",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100228.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2842-2000-sid-213014",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100207.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2841-2000-sid-213009",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100203.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2840-2000-sid-213008",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100202.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "pd-206-2000-sid-212992",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100186.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2837-2000-sid-212985",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100178.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "pd-184-2000-sid-212981",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100175.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2836-2000-sid-212979",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100168.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "pd-166-2000-sid-212955",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100153.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "pd-165-2000-sid-212958",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100149.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2832-2000-sid-212948",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100141.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2831-2000-sid-212947",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100140.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2829-2000-sid-212904",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100095.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2828-2000-sid-212903",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100094.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2827-2000-sid-212902",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100093.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2826-2000-sid-212901",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100092.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2825-2000-sid-212900",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100091.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2824-2000-sid-212899",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100090.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2823-2000-sid-212898",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100089.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2822-2000-sid-212897",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100088.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2821-2000-sid-212896",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100087.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2820-2000-sid-212895",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100086.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2818-2000-sid-212890",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100083.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2817-2000-sid-212888",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100078.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2816-2000-sid-212880",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100071.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2815-2000-sid-212879",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100070.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2814-2000-sid-212878",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100069.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2813-2000-sid-212877",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100068.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2812-2000-sid-212876",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100067.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2811-2000-sid-212871",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100062.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2810-2000-sid-212870",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100061.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2809-2000-sid-212867",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100056.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2808-2000-sid-212866",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100055.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2807-2000-sid-212860",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100052.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2806-2000-sid-212859",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100051.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2805-2000-sid-212858",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100050.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2804-2000-sid-212857",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100049.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2803-2000-sid-212856",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100048.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2802-2000-sid-212855",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100047.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2801-2000-sid-212854",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100046.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2799-2000-sid-212846",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100039.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2798-2000-sid-212845",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100038.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2797-2000-sid-212844",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100037.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2796-2000-sid-212843",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100036.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2795-2000-sid-212842",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100035.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2794-2000-sid-212841",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100034.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2793-2000-sid-212840",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100033.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2792-2000-sid-212834",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100026.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2791-2000-sid-212833",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100025.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2789-2000-sid-212829",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100021.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2788-2000-sid-212822",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100016.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2785-2000-sid-212809",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100003.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2784-2000-sid-212808",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100002.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    },
+    {
+      "id": "law-2783-2000-sid-212807",
+      "url": "https://ia37rg02wpsa01.blob.core.windows.net/fek/01/2000/20000100001.pdf",
+      "reason": "PDF text quality too low and no fallback available (chars=0, greek=0.000, headings=0, mojibake=0.000)"
+    }
+  ],
+  "note": "These are extraction gaps to defer for OCR-focused remediation. No legal text fabricated."
+}

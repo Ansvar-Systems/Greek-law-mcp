@@ -1,73 +1,226 @@
 /**
- * Rate-limited HTTP client for Polish legislation from the Sejm ELI API.
+ * Rate-limited client for official Greek legislation metadata.
  *
- * Data source: api.sejm.gov.pl — the official ELI (European Legislation Identifier)
- * API provided by the Chancellery of the Sejm of the Republic of Poland.
+ * Source:
+ *   - search.et.gr frontend + API backend
+ *   - API base: https://searchetv99.azurewebsites.net/api
  *
- * URL patterns:
- *   Metadata: https://api.sejm.gov.pl/eli/acts/DU/{YEAR}/{POZ}
- *   HTML text: https://api.sejm.gov.pl/eli/acts/DU/{YEAR}/{POZ}/text.html
- *
- * - 500ms minimum delay between requests (respectful to government servers)
- * - User-Agent header identifying the MCP
- * - Retry on 429/5xx with exponential backoff
- * - No auth needed (public government data)
+ * Important limitation:
+ *   The official source exposes law metadata and links to FEK PDFs, but does not
+ *   expose structured article-level text via API.
  */
 
-const USER_AGENT = 'Polish-Law-MCP/1.0 (https://github.com/Ansvar-Systems/polish-law-mcp; hello@ansvar.ai)';
-const MIN_DELAY_MS = 500;
+const USER_AGENT = 'Greek-Law-MCP/1.0 (https://github.com/Ansvar-Systems/Greek-law-mcp)';
+const API_BASE = 'https://searchetv99.azurewebsites.net/api';
+const MIN_DELAY_MS = 1200;
+const REQUEST_TIMEOUT_MS = 90000;
 
 let lastRequestTime = 0;
+
+function wait(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function rateLimit(): Promise<void> {
   const now = Date.now();
   const elapsed = now - lastRequestTime;
   if (elapsed < MIN_DELAY_MS) {
-    await new Promise(resolve => setTimeout(resolve, MIN_DELAY_MS - elapsed));
+    await wait(MIN_DELAY_MS - elapsed);
   }
   lastRequestTime = Date.now();
 }
 
-export interface FetchResult {
-  status: number;
-  body: string;
-  contentType: string;
-  url: string;
+function toErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
 }
 
-/**
- * Fetch a URL with rate limiting and proper headers.
- * Retries up to 3 times on 429/5xx errors with exponential backoff.
- */
-export async function fetchWithRateLimit(url: string, maxRetries = 3): Promise<FetchResult> {
+export interface ApiEnvelope<T> {
+  status: 'ok' | 'error';
+  message: string;
+  data: string;
+  parsedData: T;
+}
+
+export async function fetchOfficialPdf(url: string, maxRetries = 3): Promise<Buffer> {
   await rateLimit();
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': USER_AGENT,
-        'Accept': 'text/html, application/json, */*',
-      },
-      redirect: 'follow',
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'User-Agent': USER_AGENT,
+          'Accept': 'application/pdf,application/octet-stream,*/*',
+        },
+        redirect: 'follow',
+        signal: controller.signal,
+      });
+    } catch (error) {
+      clearTimeout(timeout);
+      if (attempt < maxRetries) {
+        const backoff = Math.pow(2, attempt + 1) * 1000;
+        console.log(`  Network error for ${url}: ${toErrorMessage(error)}. Retrying in ${backoff}ms...`);
+        await wait(backoff);
+        continue;
+      }
+      throw new Error(`Network error for ${url}: ${toErrorMessage(error)}`);
+    }
+    clearTimeout(timeout);
 
     if (response.status === 429 || response.status >= 500) {
       if (attempt < maxRetries) {
         const backoff = Math.pow(2, attempt + 1) * 1000;
         console.log(`  HTTP ${response.status} for ${url}, retrying in ${backoff}ms...`);
-        await new Promise(resolve => setTimeout(resolve, backoff));
+        await wait(backoff);
         continue;
       }
     }
 
-    const body = await response.text();
+    if (!response.ok) {
+      const text = await response.text().catch(() => '');
+      throw new Error(`HTTP ${response.status} for ${url}: ${text.slice(0, 200)}`);
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    return Buffer.from(arrayBuffer);
+  }
+
+  throw new Error(`Failed to fetch PDF ${url} after ${maxRetries} retries`);
+}
+
+async function request<T>(
+  path: string,
+  method: 'GET' | 'POST',
+  body?: Record<string, unknown>,
+  maxRetries = 3
+): Promise<ApiEnvelope<T>> {
+  const url = `${API_BASE}${path}`;
+  await rateLimit();
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method,
+        headers: {
+          'User-Agent': USER_AGENT,
+          'Accept': 'application/json',
+          ...(body ? { 'Content-Type': 'application/json' } : {}),
+        },
+        body: body ? JSON.stringify(body) : undefined,
+        redirect: 'follow',
+        signal: controller.signal,
+      });
+    } catch (error) {
+      clearTimeout(timeout);
+      if (attempt < maxRetries) {
+        const backoff = Math.pow(2, attempt + 1) * 1000;
+        console.log(`  Network error for ${url}: ${toErrorMessage(error)}. Retrying in ${backoff}ms...`);
+        await wait(backoff);
+        continue;
+      }
+      throw new Error(`Network error for ${url}: ${toErrorMessage(error)}`);
+    }
+    clearTimeout(timeout);
+
+    if (response.status === 429 || response.status >= 500) {
+      if (attempt < maxRetries) {
+        const backoff = Math.pow(2, attempt + 1) * 1000;
+        console.log(`  HTTP ${response.status} for ${url}, retrying in ${backoff}ms...`);
+        await wait(backoff);
+        continue;
+      }
+    }
+
+    const text = await response.text();
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} for ${url}: ${text.slice(0, 200)}`);
+    }
+
+    let parsedEnvelope: { status?: string; message?: string; data?: string };
+    try {
+      parsedEnvelope = JSON.parse(text) as { status?: string; message?: string; data?: string };
+    } catch {
+      throw new Error(`Non-JSON response from ${url}`);
+    }
+
+    const rawData = parsedEnvelope.data ?? '[]';
+    let parsedData: T;
+    try {
+      parsedData = JSON.parse(rawData) as T;
+    } catch {
+      throw new Error(`Invalid nested JSON payload from ${url}`);
+    }
+
     return {
-      status: response.status,
-      body,
-      contentType: response.headers.get('content-type') ?? '',
-      url: response.url,
+      status: parsedEnvelope.status === 'ok' ? 'ok' : 'error',
+      message: parsedEnvelope.message ?? '',
+      data: rawData,
+      parsedData,
     };
   }
 
   throw new Error(`Failed to fetch ${url} after ${maxRetries} retries`);
+}
+
+export interface SearchLegislationRequest {
+  legislationCatalogues: string;
+  legislationNumber: string;
+  selectYear: string[];
+}
+
+export interface SearchLegislationRow {
+  search_ID: string;
+  search_DocumentNumber: string;
+  search_IssueGroupID: string;
+  search_IssueDate: string;
+  search_PublicationDate: string;
+  search_Pages: string;
+  search_PrimaryLabel: string;
+  search_LawID: string;
+  search_LawProtocolNumber: string;
+  search_Description: string;
+  search_Score: string;
+}
+
+export interface DocumentEntityByIdRow {
+  documententitybyid_DocumentNumber?: string;
+  documententitybyid_IssueGroupID?: string;
+  documententitybyid_IssueDate?: string;
+  documententitybyid_PublicationDate?: string;
+  documententitybyid_Pages?: string;
+  documententitybyid_PrimaryLabel?: string;
+  documententitybyid_ReReleaseDate?: string;
+  documententitybyid_topics_ID?: string;
+  documententitybyid_topics_Name?: string;
+  documententitybyid_subjects_ID?: string;
+  documententitybyid_subjects_Value?: string;
+}
+
+export async function searchLegislation(
+  requestBody: SearchLegislationRequest
+): Promise<SearchLegislationRow[]> {
+  const result = await request<SearchLegislationRow[]>(
+    '/searchlegislation',
+    'POST',
+    requestBody as unknown as Record<string, unknown>
+  );
+  if (result.status !== 'ok') {
+    throw new Error(`API error for /searchlegislation: ${result.message}`);
+  }
+  return result.parsedData ?? [];
+}
+
+export async function getDocumentEntityById(searchId: string): Promise<DocumentEntityByIdRow[]> {
+  const result = await request<DocumentEntityByIdRow[]>(`/documententitybyid/${searchId}`, 'GET');
+  if (result.status !== 'ok') {
+    throw new Error(`API error for /documententitybyid/${searchId}: ${result.message}`);
+  }
+  return result.parsedData ?? [];
 }

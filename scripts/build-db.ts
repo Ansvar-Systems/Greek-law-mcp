@@ -50,6 +50,67 @@ interface DefinitionSeed {
   source_provision?: string;
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isDocumentSeed(value: unknown): value is DocumentSeed {
+  if (!isRecord(value)) return false;
+  if (typeof value.id !== 'string' || value.id.trim().length === 0) return false;
+  if (typeof value.title !== 'string' || value.title.trim().length === 0) return false;
+  return true;
+}
+
+function loadDocumentSeedsFromFile(filePath: string): DocumentSeed[] {
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const parsed = JSON.parse(content) as unknown;
+
+  if (Array.isArray(parsed)) {
+    return parsed.filter(isDocumentSeed);
+  }
+
+  if (isDocumentSeed(parsed)) {
+    return [parsed];
+  }
+
+  if (isRecord(parsed) && Array.isArray(parsed.documents)) {
+    return parsed.documents.filter(isDocumentSeed);
+  }
+
+  return [];
+}
+
+function collectSeedFilesRecursive(rootDir: string): string[] {
+  const files: string[] = [];
+  const entries = fs.readdirSync(rootDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.name.startsWith('.')) continue;
+    const entryPath = path.join(rootDir, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...collectSeedFilesRecursive(entryPath));
+      continue;
+    }
+
+    if (entry.isFile() && entry.name.endsWith('.json')) {
+      files.push(entryPath);
+    }
+  }
+
+  return files;
+}
+
+function seedFilePriority(filePath: string): number {
+  const normalized = filePath.replace(/\\/g, '/');
+  const base = path.basename(filePath);
+
+  if (normalized.includes('/_country-fulltext/')) return 0;
+  if (base === '_country-scope-documents.json') return 100;
+  if (base.startsWith('_')) return 80;
+  return 20;
+}
+
 type EUDocumentType = 'directive' | 'regulation';
 type EUCommunity = 'EU' | 'EC' | 'EEC' | 'Euratom';
 type EUReferenceType = 'implements' | 'references';
@@ -354,8 +415,12 @@ function buildDatabase(): void {
     return;
   }
 
-  const seedFiles = fs.readdirSync(SEED_DIR)
-    .filter(f => f.endsWith('.json') && !f.startsWith('.') && !f.startsWith('_'));
+  const seedFiles = collectSeedFilesRecursive(SEED_DIR)
+    .sort((left, right) => {
+      const priorityDiff = seedFilePriority(left) - seedFilePriority(right);
+      if (priorityDiff !== 0) return priorityDiff;
+      return left.localeCompare(right);
+    });
 
   if (seedFiles.length === 0) {
     console.log('No seed files found. Database created with empty schema.');
@@ -368,74 +433,97 @@ function buildDatabase(): void {
   let totalDefs = 0;
   let totalEuDocuments = 0;
   let totalEuReferences = 0;
+  let skippedSeedFiles = 0;
+  let duplicateDocumentIds = 0;
+  const seenDocumentIds = new Set<string>();
   const primaryImplementationByDocument = new Set<string>();
 
   const loadAll = db.transaction(() => {
-    for (const file of seedFiles) {
-      const filePath = path.join(SEED_DIR, file);
-      const content = fs.readFileSync(filePath, 'utf-8');
-      const seed = JSON.parse(content) as DocumentSeed;
+    for (const filePath of seedFiles) {
+      const file = path.relative(SEED_DIR, filePath);
+      let seeds: DocumentSeed[] = [];
+      try {
+        seeds = loadDocumentSeedsFromFile(filePath);
+      } catch (error) {
+        skippedSeedFiles++;
+        const message = error instanceof Error ? error.message : String(error);
+        console.warn(`Skipping invalid seed file ${file}: ${message}`);
+        continue;
+      }
 
-      insertDoc.run(
-        seed.id, seed.type ?? 'statute', seed.title, seed.title_en ?? null,
-        seed.short_name ?? null, seed.status ?? 'in_force',
-        seed.issued_date ?? null, seed.in_force_date ?? null,
-        seed.url ?? null, seed.description ?? null,
-      );
-      totalDocs++;
+      if (seeds.length === 0) {
+        skippedSeedFiles++;
+        continue;
+      }
 
-      if (seed.provisions && seed.provisions.length > 0) {
-        const deduped = dedupeProvisions(seed.provisions);
+      for (const seed of seeds) {
+        if (seenDocumentIds.has(seed.id)) {
+          duplicateDocumentIds++;
+          continue;
+        }
+        seenDocumentIds.add(seed.id);
 
-        for (const prov of deduped) {
-          const insertResult = insertProvision.run(
-            seed.id, prov.provision_ref, prov.chapter ?? null,
-            prov.section, prov.title ?? null, prov.content,
-            prov.metadata ? JSON.stringify(prov.metadata) : null,
-          );
-          totalProvisions++;
+        insertDoc.run(
+          seed.id, seed.type ?? 'statute', seed.title, seed.title_en ?? null,
+          seed.short_name ?? null, seed.status ?? 'in_force',
+          seed.issued_date ?? null, seed.in_force_date ?? null,
+          seed.url ?? null, seed.description ?? null,
+        );
+        totalDocs++;
 
-          const provisionId = Number(insertResult.lastInsertRowid);
-          const extractedRefs = extractEuReferences(prov.content);
-          if (extractedRefs.length > 0) {
-            const sourceId = `${seed.id}:${prov.provision_ref}`;
-            const lastVerified = new Date().toISOString();
+        if (seed.provisions && seed.provisions.length > 0) {
+          const deduped = dedupeProvisions(seed.provisions);
 
-            for (const ref of extractedRefs) {
-              const eurLexType = ref.type === 'regulation' ? 'reg' : 'dir';
-              const eurLexUrl = `https://eur-lex.europa.eu/eli/${eurLexType}/${ref.year}/${ref.number}/oj`;
-              const shortName = `${ref.type === 'regulation' ? 'Regulation' : 'Directive'} ${ref.year}/${ref.number}`;
+          for (const prov of deduped) {
+            const insertResult = insertProvision.run(
+              seed.id, prov.provision_ref, prov.chapter ?? null,
+              prov.section, prov.title ?? null, prov.content,
+              prov.metadata ? JSON.stringify(prov.metadata) : null,
+            );
+            totalProvisions++;
 
-              const euInsert = insertEuDocument.run(
-                ref.euDocumentId, ref.type, ref.year, ref.number, ref.community,
-                shortName, shortName, eurLexUrl, 'Auto-extracted from Greek statute text',
-              );
-              if (euInsert.changes > 0) totalEuDocuments++;
+            const provisionId = Number(insertResult.lastInsertRowid);
+            const extractedRefs = extractEuReferences(prov.content);
+            if (extractedRefs.length > 0) {
+              const sourceId = `${seed.id}:${prov.provision_ref}`;
+              const lastVerified = new Date().toISOString();
 
-              const primaryKey = `${seed.id}:${ref.euDocumentId}`;
-              const isPrimary = ref.referenceType === 'implements' && !primaryImplementationByDocument.has(primaryKey) ? 1 : 0;
-              if (isPrimary === 1) primaryImplementationByDocument.add(primaryKey);
+              for (const ref of extractedRefs) {
+                const eurLexType = ref.type === 'regulation' ? 'reg' : 'dir';
+                const eurLexUrl = `https://eur-lex.europa.eu/eli/${eurLexType}/${ref.year}/${ref.number}/oj`;
+                const shortName = `${ref.type === 'regulation' ? 'Regulation' : 'Directive'} ${ref.year}/${ref.number}`;
 
-              try {
-                const refInsert = insertEuReference.run(
-                  'provision', sourceId, seed.id, provisionId, ref.euDocumentId, ref.euArticle,
-                  ref.referenceType, ref.referenceContext, ref.fullCitation, isPrimary,
-                  isPrimary === 1 ? 'complete' : 'unknown', lastVerified,
+                const euInsert = insertEuDocument.run(
+                  ref.euDocumentId, ref.type, ref.year, ref.number, ref.community,
+                  shortName, shortName, eurLexUrl, 'Auto-extracted from Greek statute text',
                 );
-                if (refInsert.changes > 0) totalEuReferences++;
-              } catch {
-                // Ignore duplicate references
+                if (euInsert.changes > 0) totalEuDocuments++;
+
+                const primaryKey = `${seed.id}:${ref.euDocumentId}`;
+                const isPrimary = ref.referenceType === 'implements' && !primaryImplementationByDocument.has(primaryKey) ? 1 : 0;
+                if (isPrimary === 1) primaryImplementationByDocument.add(primaryKey);
+
+                try {
+                  const refInsert = insertEuReference.run(
+                    'provision', sourceId, seed.id, provisionId, ref.euDocumentId, ref.euArticle,
+                    ref.referenceType, ref.referenceContext, ref.fullCitation, isPrimary,
+                    isPrimary === 1 ? 'complete' : 'unknown', lastVerified,
+                  );
+                  if (refInsert.changes > 0) totalEuReferences++;
+                } catch {
+                  // Ignore duplicate references
+                }
               }
             }
           }
         }
-      }
 
-      for (const def of seed.definitions ?? []) {
-        insertDefinition.run(
-          seed.id, def.term, null, def.definition, def.source_provision ?? null,
-        );
-        totalDefs++;
+        for (const def of seed.definitions ?? []) {
+          insertDefinition.run(
+            seed.id, def.term, null, def.definition, def.source_provision ?? null,
+          );
+          totalDefs++;
+        }
       }
     }
   });
@@ -467,6 +555,7 @@ function buildDatabase(): void {
     `\nBuild complete: ${totalDocs} documents, ${totalProvisions} provisions, ` +
     `${totalDefs} definitions, ${totalEuDocuments} EU documents, ${totalEuReferences} EU references`
   );
+  console.log(`Seed files skipped: ${skippedSeedFiles}; duplicate document IDs skipped: ${duplicateDocumentIds}`);
   console.log(`Output: ${DB_PATH} (${(size / 1024 / 1024).toFixed(1)} MB)`);
 }
 
