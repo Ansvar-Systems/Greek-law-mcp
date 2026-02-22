@@ -30,9 +30,9 @@ describe('Greek Law MCP Database (official FEK ingestion mode)', () => {
   });
 
   describe('Counts', () => {
-    it('has 10 legal documents', () => {
+    it('has at least 10 legal documents', () => {
       const row = db.prepare('SELECT COUNT(*) as count FROM legal_documents').get() as { count: number };
-      expect(row.count).toBe(10);
+      expect(row.count).toBeGreaterThanOrEqual(10);
     });
 
     it('has extracted provisions from official FEK text', () => {

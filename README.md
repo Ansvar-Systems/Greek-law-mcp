@@ -4,9 +4,11 @@
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 [![CI](https://github.com/Ansvar-Systems/Greek-law-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Ansvar-Systems/Greek-law-mcp/actions/workflows/ci.yml)
 
-A Model Context Protocol (MCP) server providing access to Greek legislation covering data protection, cybersecurity, e-commerce, and criminal law provisions.
+A Model Context Protocol (MCP) server providing access to Greek legislation from official FEK sources.
 
-Provision text is ingested from official FEK PDFs (metadata API + PDF text extraction, with OCR fallback for image-only legacy issues).
+Current dataset mode combines:
+- country-scope official metadata corpus (21k+ acts via search.et.gr API)
+- high-fidelity provision extraction for core target acts from official FEK PDFs (OCR fallback for image-only legacy issues)
 
 **MCP Registry:** `eu.ansvar/greek-law-mcp`
 **npm:** `@ansvar/greek-law-mcp`

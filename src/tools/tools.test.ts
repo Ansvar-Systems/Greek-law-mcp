@@ -22,9 +22,9 @@ afterAll(() => {
 });
 
 describe('database integrity', () => {
-  it('has 10 legal documents', () => {
+  it('has at least 10 legal documents', () => {
     const row = db.prepare('SELECT COUNT(*) as cnt FROM legal_documents').get() as { cnt: number };
-    expect(row.cnt).toBe(10);
+    expect(row.cnt).toBeGreaterThanOrEqual(10);
   });
 
   it('has extracted provisions', () => {

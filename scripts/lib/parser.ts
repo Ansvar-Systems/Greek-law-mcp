@@ -52,6 +52,16 @@ export interface ParsedAct {
   definitions: ParsedDefinition[];
 }
 
+function sanitizeIdToken(value: string): string {
+  return value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80);
+}
+
 function normalizeWhitespace(text: string): string {
   return text.replace(/\s+/g, ' ').trim();
 }
@@ -65,6 +75,13 @@ function parseUsDateToIso(dateValue: string | undefined): string | undefined {
   const day = match[2].padStart(2, '0');
   const year = match[3];
   return `${year}-${month}-${day}`;
+}
+
+export function parseSearchIssueYear(row: SearchLegislationRow): number | null {
+  const issueDate = parseUsDateToIso(row.search_IssueDate);
+  if (!issueDate) return null;
+  const year = Number.parseInt(issueDate.slice(0, 4), 10);
+  return Number.isNaN(year) ? null : year;
 }
 
 function pad(value: string, size: number): string {
@@ -112,6 +129,56 @@ export function parseSearchResultToAct(row: SearchLegislationRow, target: ActTar
     title_en: target.titleEn ?? '',
     short_name: target.shortName ?? `${target.legislationCatalogues === '2' ? 'Π.Δ.' : 'Ν.'} ${target.lawNumber}/${target.year}`,
     status: target.status,
+    issued_date: issuedDate,
+    url: buildFekPdfUrl(row),
+    description: title,
+    provisions: [],
+    definitions: [],
+  };
+}
+
+function catalogueToPrefix(catalogue: string): string {
+  if (catalogue === '1') return 'law';
+  if (catalogue === '2') return 'pd';
+  if (catalogue === '3') return 'pnp';
+  return 'act';
+}
+
+function catalogueToShortLabel(catalogue: string): string {
+  if (catalogue === '1') return 'Ν.';
+  if (catalogue === '2') return 'Π.Δ.';
+  if (catalogue === '3') return 'Π.Ν.Π.';
+  return 'Πράξη';
+}
+
+export function buildCountryScopeActId(
+  row: SearchLegislationRow,
+  legislationCatalogue: string,
+): string {
+  const year = parseSearchIssueYear(row) ?? 0;
+  const lawNumberRaw = normalizeWhitespace(row.search_LawProtocolNumber ?? row.search_DocumentNumber ?? '');
+  const lawNumberToken = sanitizeIdToken(lawNumberRaw.length > 0 ? lawNumberRaw : row.search_DocumentNumber ?? '');
+  const prefix = catalogueToPrefix(legislationCatalogue);
+  return `${prefix}-${lawNumberToken || 'unknown'}-${year}-sid-${row.search_ID}`;
+}
+
+export function parseSearchResultToCountryScopeAct(
+  row: SearchLegislationRow,
+  legislationCatalogue: string,
+): ParsedAct {
+  const title = normalizeWhitespace(row.search_Description || row.search_PrimaryLabel || '');
+  const issuedDate = parseUsDateToIso(row.search_IssueDate);
+  const year = issuedDate?.slice(0, 4) ?? '0000';
+  const lawNumber = normalizeWhitespace(row.search_LawProtocolNumber ?? row.search_DocumentNumber ?? '');
+  const shortLabel = catalogueToShortLabel(legislationCatalogue);
+
+  return {
+    id: buildCountryScopeActId(row, legislationCatalogue),
+    type: 'statute',
+    title,
+    title_en: '',
+    short_name: lawNumber ? `${shortLabel} ${lawNumber}/${year}` : `${shortLabel} ${year}`,
+    status: 'in_force',
     issued_date: issuedDate,
     url: buildFekPdfUrl(row),
     description: title,
