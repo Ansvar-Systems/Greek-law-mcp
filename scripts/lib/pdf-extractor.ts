@@ -17,6 +17,7 @@ export interface TextQualityMetrics {
 export interface PdfExtractionOptions {
   enableOcr: boolean;
   maxOcrPages?: number;
+  allowLowQualityFallback?: boolean;
 }
 
 export interface PdfExtractionResult {
@@ -177,6 +178,14 @@ function summarizeQuality(metrics: TextQualityMetrics): string {
   return `chars=${metrics.charCount}, greek=${metrics.greekRatio.toFixed(3)}, headings=${metrics.articleHeadingCount}, mojibake=${metrics.mojibakeRatio.toFixed(3)}`;
 }
 
+function scoreQuality(metrics: TextQualityMetrics): number {
+  return (
+    metrics.charCount * (metrics.greekRatio + 0.05) +
+    metrics.articleHeadingCount * 4000 -
+    metrics.mojibakeRatio * metrics.charCount
+  );
+}
+
 export async function extractTextFromPdfBuffer(
   pdfBuffer: Buffer,
   options: PdfExtractionOptions,
@@ -189,10 +198,18 @@ export async function extractTextFromPdfBuffer(
 
   try {
     const pageCount = readPdfPageCount(pdfPath);
+    const candidates: PdfExtractionResult[] = [];
 
     const pdftotextRaw = extractWithPdftotext(pdfPath);
     const pdftotextText = normalizeText(pdftotextRaw);
     const pdftotextMetrics = assessTextQuality(pdftotextText);
+    candidates.push({
+      text: pdftotextText,
+      method: 'pdftotext',
+      pageCount,
+      metrics: pdftotextMetrics,
+      warnings: [],
+    });
 
     if (isTextUsable(pdftotextMetrics)) {
       return {
@@ -207,6 +224,13 @@ export async function extractTextFromPdfBuffer(
     if (detectMojibake(pdftotextRaw)) {
       const decoded = normalizeText(decodeWindows1253(pdftotextRaw));
       const decodedMetrics = assessTextQuality(decoded);
+      candidates.push({
+        text: decoded,
+        method: 'pdftotext_windows1253',
+        pageCount,
+        metrics: decodedMetrics,
+        warnings: [],
+      });
       if (isTextUsable(decodedMetrics)) {
         return {
           text: decoded,
@@ -220,46 +244,75 @@ export async function extractTextFromPdfBuffer(
       warnings.push(`windows-1253 recode quality low (${summarizeQuality(decodedMetrics)})`);
     }
 
-    if (!options.enableOcr) {
-      throw new Error(
-        `PDF text quality too low and OCR disabled (${summarizeQuality(pdftotextMetrics)})`,
-      );
-    }
+    if (options.enableOcr) {
+      const maxOcrPages = options.maxOcrPages ?? 35;
+      if (pageCount > maxOcrPages) {
+        warnings.push(`OCR skipped: ${pageCount} pages exceeds limit ${maxOcrPages}`);
+      } else {
+        const pageImages = renderPdfPagesToPng(pdfPath, path.join(tmpDir, 'page'));
+        if (pageImages.length === 0) {
+          warnings.push('OCR failed: no page images rendered');
+        } else {
+          let ocrMethod: PdfExtractionResult['method'] = 'ocr_tesseract_js';
+          let ocrText: string;
 
-    const maxOcrPages = options.maxOcrPages ?? 35;
-    if (pageCount > maxOcrPages) {
-      throw new Error(`OCR skipped: ${pageCount} pages exceeds limit ${maxOcrPages}`);
-    }
+          if (hasBinary('tesseract')) {
+            ocrMethod = 'ocr_tesseract_cli';
+            ocrText = extractWithTesseractCli(pageImages);
+          } else {
+            ocrText = await extractWithTesseractJs(pageImages);
+          }
 
-    const pageImages = renderPdfPagesToPng(pdfPath, path.join(tmpDir, 'page'));
-    if (pageImages.length === 0) {
-      throw new Error('OCR failed: no page images rendered');
-    }
+          const normalizedOcrText = normalizeText(ocrText);
+          const ocrMetrics = assessTextQuality(normalizedOcrText);
+          warnings.push('OCR-derived text may include recognition noise from source scan quality.');
+          if (!isTextUsable(ocrMetrics)) {
+            warnings.push(`OCR quality low (${summarizeQuality(ocrMetrics)})`);
+          }
 
-    let ocrMethod: PdfExtractionResult['method'] = 'ocr_tesseract_js';
-    let ocrText: string;
+          candidates.push({
+            text: normalizedOcrText,
+            method: ocrMethod,
+            pageCount,
+            metrics: ocrMetrics,
+            warnings: [],
+          });
 
-    if (hasBinary('tesseract')) {
-      ocrMethod = 'ocr_tesseract_cli';
-      ocrText = extractWithTesseractCli(pageImages);
+          if (isTextUsable(ocrMetrics)) {
+            return {
+              text: normalizedOcrText,
+              method: ocrMethod,
+              pageCount,
+              metrics: ocrMetrics,
+              warnings,
+            };
+          }
+        }
+      }
     } else {
-      ocrText = await extractWithTesseractJs(pageImages);
+      warnings.push(`OCR disabled after low-quality pdftotext (${summarizeQuality(pdftotextMetrics)})`);
     }
 
-    const normalizedOcrText = normalizeText(ocrText);
-    const ocrMetrics = assessTextQuality(normalizedOcrText);
-    warnings.push('OCR-derived text may include recognition noise from source scan quality.');
-    if (!isTextUsable(ocrMetrics)) {
-      warnings.push(`OCR quality low (${summarizeQuality(ocrMetrics)})`);
+    if (options.allowLowQualityFallback) {
+      const best = candidates
+        .filter(candidate => candidate.text.trim().length > 0)
+        .sort((left, right) => scoreQuality(right.metrics) - scoreQuality(left.metrics))[0];
+
+      if (best) {
+        warnings.push(`Returning low-quality fallback (${best.method}; ${summarizeQuality(best.metrics)})`);
+        return {
+          text: best.text,
+          method: best.method,
+          pageCount,
+          metrics: best.metrics,
+          warnings,
+        };
+      }
     }
 
-    return {
-      text: normalizedOcrText,
-      method: ocrMethod,
-      pageCount,
-      metrics: ocrMetrics,
-      warnings,
-    };
+    throw new Error(
+      `PDF text quality too low and no fallback available (${summarizeQuality(pdftotextMetrics)})`,
+    );
   } finally {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   }

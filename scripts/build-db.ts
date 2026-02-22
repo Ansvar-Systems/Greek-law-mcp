@@ -80,6 +80,37 @@ function loadDocumentSeedsFromFile(filePath: string): DocumentSeed[] {
   return [];
 }
 
+function collectSeedFilesRecursive(rootDir: string): string[] {
+  const files: string[] = [];
+  const entries = fs.readdirSync(rootDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.name.startsWith('.')) continue;
+    const entryPath = path.join(rootDir, entry.name);
+
+    if (entry.isDirectory()) {
+      files.push(...collectSeedFilesRecursive(entryPath));
+      continue;
+    }
+
+    if (entry.isFile() && entry.name.endsWith('.json')) {
+      files.push(entryPath);
+    }
+  }
+
+  return files;
+}
+
+function seedFilePriority(filePath: string): number {
+  const normalized = filePath.replace(/\\/g, '/');
+  const base = path.basename(filePath);
+
+  if (normalized.includes('/_country-fulltext/')) return 0;
+  if (base === '_country-scope-documents.json') return 100;
+  if (base.startsWith('_')) return 80;
+  return 20;
+}
+
 type EUDocumentType = 'directive' | 'regulation';
 type EUCommunity = 'EU' | 'EC' | 'EEC' | 'Euratom';
 type EUReferenceType = 'implements' | 'references';
@@ -384,8 +415,12 @@ function buildDatabase(): void {
     return;
   }
 
-  const seedFiles = fs.readdirSync(SEED_DIR)
-    .filter(f => f.endsWith('.json') && !f.startsWith('.'));
+  const seedFiles = collectSeedFilesRecursive(SEED_DIR)
+    .sort((left, right) => {
+      const priorityDiff = seedFilePriority(left) - seedFilePriority(right);
+      if (priorityDiff !== 0) return priorityDiff;
+      return left.localeCompare(right);
+    });
 
   if (seedFiles.length === 0) {
     console.log('No seed files found. Database created with empty schema.');
@@ -404,8 +439,8 @@ function buildDatabase(): void {
   const primaryImplementationByDocument = new Set<string>();
 
   const loadAll = db.transaction(() => {
-    for (const file of seedFiles) {
-      const filePath = path.join(SEED_DIR, file);
+    for (const filePath of seedFiles) {
+      const file = path.relative(SEED_DIR, filePath);
       let seeds: DocumentSeed[] = [];
       try {
         seeds = loadDocumentSeedsFromFile(filePath);

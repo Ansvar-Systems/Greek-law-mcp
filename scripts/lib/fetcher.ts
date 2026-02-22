@@ -13,6 +13,7 @@
 const USER_AGENT = 'Greek-Law-MCP/1.0 (https://github.com/Ansvar-Systems/Greek-law-mcp)';
 const API_BASE = 'https://searchetv99.azurewebsites.net/api';
 const MIN_DELAY_MS = 1200;
+const REQUEST_TIMEOUT_MS = 90000;
 
 let lastRequestTime = 0;
 
@@ -29,6 +30,11 @@ async function rateLimit(): Promise<void> {
   lastRequestTime = Date.now();
 }
 
+function toErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  return String(error);
+}
+
 export interface ApiEnvelope<T> {
   status: 'ok' | 'error';
   message: string;
@@ -40,14 +46,30 @@ export async function fetchOfficialPdf(url: string, maxRetries = 3): Promise<Buf
   await rateLimit();
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'User-Agent': USER_AGENT,
-        'Accept': 'application/pdf,application/octet-stream,*/*',
-      },
-      redirect: 'follow',
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'User-Agent': USER_AGENT,
+          'Accept': 'application/pdf,application/octet-stream,*/*',
+        },
+        redirect: 'follow',
+        signal: controller.signal,
+      });
+    } catch (error) {
+      clearTimeout(timeout);
+      if (attempt < maxRetries) {
+        const backoff = Math.pow(2, attempt + 1) * 1000;
+        console.log(`  Network error for ${url}: ${toErrorMessage(error)}. Retrying in ${backoff}ms...`);
+        await wait(backoff);
+        continue;
+      }
+      throw new Error(`Network error for ${url}: ${toErrorMessage(error)}`);
+    }
+    clearTimeout(timeout);
 
     if (response.status === 429 || response.status >= 500) {
       if (attempt < maxRetries) {
@@ -80,16 +102,32 @@ async function request<T>(
   await rateLimit();
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    const response = await fetch(url, {
-      method,
-      headers: {
-        'User-Agent': USER_AGENT,
-        'Accept': 'application/json',
-        ...(body ? { 'Content-Type': 'application/json' } : {}),
-      },
-      body: body ? JSON.stringify(body) : undefined,
-      redirect: 'follow',
-    });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        method,
+        headers: {
+          'User-Agent': USER_AGENT,
+          'Accept': 'application/json',
+          ...(body ? { 'Content-Type': 'application/json' } : {}),
+        },
+        body: body ? JSON.stringify(body) : undefined,
+        redirect: 'follow',
+        signal: controller.signal,
+      });
+    } catch (error) {
+      clearTimeout(timeout);
+      if (attempt < maxRetries) {
+        const backoff = Math.pow(2, attempt + 1) * 1000;
+        console.log(`  Network error for ${url}: ${toErrorMessage(error)}. Retrying in ${backoff}ms...`);
+        await wait(backoff);
+        continue;
+      }
+      throw new Error(`Network error for ${url}: ${toErrorMessage(error)}`);
+    }
+    clearTimeout(timeout);
 
     if (response.status === 429 || response.status >= 500) {
       if (attempt < maxRetries) {

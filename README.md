@@ -10,6 +10,14 @@ Current dataset mode combines:
 - country-scope official metadata corpus (21k+ acts via search.et.gr API)
 - high-fidelity provision extraction for core target acts from official FEK PDFs (OCR fallback for image-only legacy issues)
 
+To enrich country-scope records with full text incrementally:
+
+```bash
+npm run ingest:country-fulltext -- --status-every 200
+```
+
+The run is resumable and writes per-document enriched seeds under `data/seed/_country-fulltext/`.
+
 **MCP Registry:** `eu.ansvar/greek-law-mcp`
 **npm:** `@ansvar/greek-law-mcp`
 
