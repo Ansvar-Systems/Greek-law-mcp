@@ -21,7 +21,7 @@
   ],
   "remoteEndpoints": [
     {
-      "url": "https://mcp.ansvar.eu/law-greek-law-mcp/mcp",
+      "url": "https://greek-law-mcp.vercel.app/mcp",
       "transport": {
         "type": "streamable-http"
       }
