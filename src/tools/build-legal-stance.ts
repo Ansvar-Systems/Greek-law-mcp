@@ -5,7 +5,8 @@
 import type Database from '@ansvar/mcp-sqlite';
 import { buildFtsQueryVariants, sanitizeFtsInput } from '../utils/fts-query.js';
 import { resolveDocumentId } from '../utils/statute-id.js';
-import { generateResponseMetadata, type ToolResponse } from '../utils/metadata.js';
+import { generateResearchOnlyMetadata, type ToolResponse } from '../utils/metadata.js';
+import { buildCitation, type CitationMetadata } from '../utils/citation.js';
 
 export interface BuildLegalStanceInput {
   query: string;
@@ -21,6 +22,7 @@ export interface LegalStanceResult {
   title: string | null;
   snippet: string;
   relevance: number;
+  _citation?: CitationMetadata;
 }
 
 export async function buildLegalStance(
@@ -28,7 +30,7 @@ export async function buildLegalStance(
   input: BuildLegalStanceInput,
 ): Promise<ToolResponse<LegalStanceResult[]>> {
   if (!input.query || input.query.trim().length === 0) {
-    return { results: [], _metadata: generateResponseMetadata(db) };
+    return { results: [], _meta: generateResearchOnlyMetadata(db) };
   }
 
   const limit = Math.min(Math.max(input.limit ?? 5, 1), 20);
@@ -43,8 +45,8 @@ export async function buildLegalStance(
     if (!resolved) {
       return {
         results: [],
-        _metadata: {
-          ...generateResponseMetadata(db),
+        _meta: {
+          ...generateResearchOnlyMetadata(db),
           note: `No document found matching "${input.document_id}"`,
         },
       };
@@ -83,9 +85,17 @@ export async function buildLegalStance(
         queryStrategy = ftsQuery === queryVariants[0] ? 'exact' : 'fallback';
         const deduped = deduplicateResults(rows, limit);
         return {
-          results: deduped,
-          _metadata: {
-            ...generateResponseMetadata(db),
+          results: deduped.map(row => ({
+            ...row,
+            _citation: buildCitation(
+              row.document_id,
+              `${row.provision_ref} ${row.document_title}`,
+              'get_provision',
+              { document_id: row.document_id, section: row.provision_ref },
+            ),
+          })),
+          _meta: {
+            ...generateResearchOnlyMetadata(db),
             ...(queryStrategy === 'fallback' ? { query_strategy: 'broadened' } : {}),
           },
         };
@@ -95,7 +105,7 @@ export async function buildLegalStance(
     }
   }
 
-  return { results: [], _metadata: generateResponseMetadata(db) };
+  return { results: [], _meta: generateResearchOnlyMetadata(db) };
 }
 
 /**

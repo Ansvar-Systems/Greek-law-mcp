@@ -2,8 +2,6 @@
  * format_citation — Format an Greek legal citation per standard conventions.
  */
 
-import { generateResponseMetadata, type ToolResponse } from '../utils/metadata.js';
-import type Database from '@ansvar/mcp-sqlite';
 
 export interface FormatCitationInput {
   citation: string;
