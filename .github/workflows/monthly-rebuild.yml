@@ -1,0 +1,125 @@
+name: Monthly Database Rebuild
+
+on:
+  schedule:
+    - cron: '0 3 1 * *'  # Monthly on the 1st at 3 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  monthly-rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Build
+        run: npm run build
+
+      - name: Run ingestion
+        id: ingest
+        shell: bash
+        run: |
+          set +e
+          npm run ingest 2>&1 | tee ingest.log
+          STATUS=${PIPESTATUS[0]}
+          echo "status_code=$STATUS" >> "$GITHUB_OUTPUT"
+          if [ "$STATUS" -eq 0 ]; then
+            echo "ingest_ok=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ingest_ok=false" >> "$GITHUB_OUTPUT"
+          fi
+          exit 0
+
+      - name: Upload ingest log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: monthly-rebuild-log
+          path: ingest.log
+          retention-days: 30
+
+  report:
+    needs: monthly-rebuild
+    if: always()
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create issue on failure
+        if: needs.monthly-rebuild.outputs.ingest_ok != 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = 'Monthly Rebuild: ingestion failed';
+            const body = [
+              `**Automated monthly rebuild:** ${new Date().toISOString()}`,
+              '',
+              '| Metric | Value |',
+              '|--------|-------|',
+              `| Exit code | ${{ needs.monthly-rebuild.outputs.status_code }} |`,
+              `| Ingest OK | ${{ needs.monthly-rebuild.outputs.ingest_ok }} |`,
+              '',
+              '### Recommended actions',
+              '1. Check the `monthly-rebuild-log` artifact for details',
+              '2. Verify upstream source at https://www.et.gr is reachable',
+              '3. Run `npm run ingest` locally to reproduce',
+              '4. Re-run contract tests after rebuild',
+            ].join('\n');
+
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'monthly-rebuild',
+            });
+
+            if (issues.length > 0) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issues[0].number,
+                title,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                body,
+                labels: ['monthly-rebuild', 'automated'],
+              });
+            }
+
+      - name: Close stale rebuild issues on success
+        if: needs.monthly-rebuild.outputs.ingest_ok == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'monthly-rebuild',
+            });
+            for (const issue of issues) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+                state_reason: 'completed',
+              });
+            }

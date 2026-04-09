@@ -4,6 +4,7 @@
 
 import type Database from '@ansvar/mcp-sqlite';
 import { generateResponseMetadata, type ToolResponse } from '../utils/metadata.js';
+import { buildCitation, type CitationMetadata } from '../utils/citation.js';
 
 export interface SearchEUImplementationsInput {
   query?: string;
@@ -22,6 +23,7 @@ export interface EUImplementationSearchResult {
   title: string | null;
   short_name: string | null;
   greek_statute_count: number;
+  _citation?: CitationMetadata;
 }
 
 export async function searchEUImplementations(
@@ -33,7 +35,7 @@ export async function searchEUImplementations(
   } catch {
     return {
       results: [],
-      _metadata: {
+      _meta: {
         ...generateResponseMetadata(db),
         ...{ note: 'EU documents not available in this database tier' },
       },
@@ -87,5 +89,16 @@ export async function searchEUImplementations(
   params.push(limit);
 
   const rows = db.prepare(sql).all(...params) as EUImplementationSearchResult[];
-  return { results: rows, _metadata: generateResponseMetadata(db) };
+  return {
+    results: rows.map(row => ({
+      ...row,
+      _citation: buildCitation(
+        row.eu_document_id,
+        row.short_name || row.title || row.eu_document_id,
+        'get_greek_implementations',
+        { eu_document_id: row.eu_document_id },
+      ),
+    })),
+    _meta: generateResponseMetadata(db),
+  };
 }

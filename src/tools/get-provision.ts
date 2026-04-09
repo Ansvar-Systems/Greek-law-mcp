@@ -5,7 +5,7 @@
 import type Database from '@ansvar/mcp-sqlite';
 import { resolveDocumentId } from '../utils/statute-id.js';
 import { generateResponseMetadata, type ToolResponse } from '../utils/metadata.js';
-import { buildProvisionCitation } from '../utils/citation.js';
+import { buildProvisionCitation, buildCitation, type CitationMetadata } from '../utils/citation.js';
 
 export interface GetProvisionInput {
   document_id: string;
@@ -24,6 +24,7 @@ export interface ProvisionResult {
   content: string;
   section_number?: string;
   url?: string;
+  _citation?: CitationMetadata;
 }
 
 export async function getProvision(
@@ -34,10 +35,17 @@ export async function getProvision(
   if (!resolvedId) {
     return {
       results: [],
-      _metadata: {
+      _meta: {
         ...generateResponseMetadata(db),
         ...{ note: `No document found matching "${input.document_id}"` },
       },
+      _error_type: 'not_found',
+      _citation: buildCitation(
+        input.document_id,
+        input.document_id,
+        'get_provision',
+        { document_id: input.document_id },
+      ),
     };
   }
 
@@ -45,7 +53,7 @@ export async function getProvision(
     'SELECT id, title, url FROM legal_documents WHERE id = ?'
   ).get(resolvedId) as { id: string; title: string; url: string | null } | undefined;
   if (!docRow) {
-    return { results: [], _metadata: generateResponseMetadata(db) };
+    return { results: [], _meta: generateResponseMetadata(db), _error_type: 'not_found' };
   }
 
   // Specific provision lookup
@@ -92,7 +100,7 @@ export async function getProvision(
           section_number: String(provision.provision_ref).replace(/^s/, ''),
           url: docRow.url ?? undefined,
         }],
-        _metadata: generateResponseMetadata(db),
+        _meta: generateResponseMetadata(db),
         _citation: buildProvisionCitation(
           resolvedId,
           docRow.title,
@@ -107,10 +115,11 @@ export async function getProvision(
 
     return {
       results: [],
-      _metadata: {
+      _meta: {
         ...generateResponseMetadata(db),
         ...{ note: `Provision "${ref}" not found in document "${resolvedId}"` },
       },
+      _error_type: 'not_found',
     };
   }
 
@@ -130,7 +139,16 @@ export async function getProvision(
       content: String(p.content),
       section_number: String(p.provision_ref).replace(/^s/, ''),
       url: docRow.url ?? undefined,
+      _citation: buildProvisionCitation(
+        resolvedId,
+        docRow.title,
+        String(p.provision_ref),
+        input.document_id,
+        String(p.provision_ref),
+        docRow.url || null,
+        null,
+      ),
     })),
-    _metadata: generateResponseMetadata(db),
+    _meta: generateResponseMetadata(db),
   };
 }

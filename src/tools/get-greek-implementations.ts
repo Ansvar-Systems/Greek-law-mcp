@@ -30,7 +30,7 @@ export async function getGreekImplementations(
   } catch {
     return {
       results: [],
-      _metadata: {
+      _meta: {
         ...generateResponseMetadata(db),
         ...{ note: 'EU references not available in this database tier' },
       },
@@ -63,5 +63,5 @@ export async function getGreekImplementations(
   sql += ' GROUP BY ld.id, er.reference_type ORDER BY is_primary DESC, reference_count DESC';
 
   const rows = db.prepare(sql).all(...params) as GreekImplementationResult[];
-  return { results: rows, _metadata: generateResponseMetadata(db) };
+  return { results: rows, _meta: generateResponseMetadata(db) };
 }
