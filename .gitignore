@@ -10,6 +10,11 @@ data/seed/_country-fulltext/
 data/seed/_country-fulltext-progress.json
 .claude/
 .serena/
+<<<<<<< HEAD
 data/*.db
 data/*.db-shm
 data/*.db-wal
+=======
+*-e
+*.bak
+>>>>>>> origin/dev
