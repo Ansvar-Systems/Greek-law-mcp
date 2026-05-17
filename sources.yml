@@ -10,9 +10,12 @@ sources:
     update_frequency: "unknown"
     last_ingested: "2026-02-21"
     license_or_terms:
-      type: "government_terms"
+      type: "Greek-N-2121-1993-Art-2-5"
+      ansvar_code: "Greek-N-2121-1993-Art-2-5"
+      statute_ref: "Ν. 2121/1993 Άρθρο 2(5)"
       url: "https://et.gr/oroi-chrisis/"
-      summary: "Official FEK texts are published by the National Printing Office; use is subject to official site terms."
+      url_pattern: '^https?://(?:www\.)?et\.gr/.+'
+      summary: "Greek statutory-PD carve-out per Ν. 2121/1993 Άρθρο 2(5) — broad. Three-category enumeration + catch-all (νομοθετικά, διοικητικά, δικαστικά κείμενα + other texts of official character). FEK texts from the National Printing Office (Εθνικό Τυπογραφείο) sit under this basis. The arch-docs fleet manifest declares opi.gr (the copyright office) as a regulator publisher; et.gr is the official gazette source for this corpus. See infrastructure/attribution-licenses.json Greek-N-2121-1993-Art-2-5."
     coverage:
       scope: "Official metadata for selected Greek laws via search API, with article-level text extracted from official FEK PDFs"
       limitations: "No official structured article-level API endpoint was found; two image-only legacy FEKs required OCR fallback"

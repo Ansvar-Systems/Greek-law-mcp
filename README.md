@@ -356,8 +356,28 @@ Apache License 2.0. See [LICENSE](./LICENSE) for details.
 
 ### Data Licenses
 
-- **Statutes & Legislation:** Εθνικό Τυπογραφείο / Greek Government (public domain)
-- **EU Metadata:** EUR-Lex (EU public domain)
+Ansvar attribution code: **`Greek-N-2121-1993-Art-2-5`**. Basis:
+`Ν. 2121/1993 Άρθρο 2(5)` — broad statutory-PD carve-out via
+three-category enumeration plus a catch-all.
+
+- **Statutes & Legislation:** Εθνικό Τυπογραφείο (National Printing
+  Office) — FEK archive at `et.gr` / `search.et.gr`. Reused under
+  N. 2121/1993 Art. 2(5).
+- **EU Metadata:** EUR-Lex (EU public-domain notice).
+
+### Coverage scope (broad)
+
+N. 2121/1993 Art. 2(5) carves out three named categories plus a
+catch-all:
+
+- Legislative texts (`νομοθετικά κείμενα`)
+- Administrative texts (`διοικητικά κείμενα`)
+- Judicial texts (`δικαστικά κείμενα`)
+- "...and other texts of official character" — catch-all clause
+
+See `docs/audits/2026-05-17-eu-copyright-statutory-works-batch-2-HU-LU-PT-RO-GR.md`
+in the Ansvar architecture-documentation repo for the verbatim Art. 2(5)
+text and the coverage analysis.
 
 ---
 
